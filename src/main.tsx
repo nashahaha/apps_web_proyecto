@@ -1,11 +1,10 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './style.css'
-import App from './components/App.tsx'
-import MainView from './main_view.tsx'
+import RecipesExplorer from './RecipesExplorer.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <MainView />
+    <RecipesExplorer />
   </StrictMode>,
 )

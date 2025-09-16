@@ -1,8 +1,8 @@
-interface headerProps {
+interface navbarProps {
     view_name: string; // nombre de la sección a la que pertenece el header
 };
 
-const Navbar = ({ view_name }: headerProps) => {
+const Navbar = ({ view_name }: navbarProps) => {
     return (
         <div className="navbar bg-base-100 shadow-sm">
             <div className="flex-1">
