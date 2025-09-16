@@ -39,17 +39,14 @@ const recipes = [{
 
 const RecipeList = () => {
     return (
-        <div>
-            <div className="p-10 flex flex-wrap gap-4">
-                {recipes.map(recipe =>
-                    <Recipe
-                        key={recipe.id}
-                        img_path={recipe.img_path}
-                        rec_title={recipe.rec_title}
-                        prep_time={recipe.prep_time}
-                        difficulty={recipe.difficulty} />)}
-            </div>
-
+        <div className="px-10 pb-5 flex flex-wrap gap-4">
+            {recipes.map(recipe =>
+                <Recipe
+                    key={recipe.id}
+                    img_path={recipe.img_path}
+                    rec_title={recipe.rec_title}
+                    prep_time={recipe.prep_time}
+                    difficulty={recipe.difficulty} />)}
         </div>
     )
 };
