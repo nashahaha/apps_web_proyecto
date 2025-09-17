@@ -1,14 +1,28 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const SearchBar = () => {
-    // la idea es reemplazar esto por la info de la base de datos
-    const tagsList = ["egg", "milk", "potato", "onion", "oister", "apple", "almond", "alga", "anchoa", "salmon"]
-
-
+    const [tagsList, setTagsList] = useState<string[]>([]);
     const [tags, setTags] = useState<string[]>([]);
     const [inputValue, setInputValue] = useState("");
     const [filterTags, setFiltradas] = useState<string[]>([]); // ingredientes agregados
 
+    useEffect(() => {
+        fetch("http://localhost:3001/recipes") 
+        .then((res) => res.json())
+        .then((data) => {
+            // extraer ingredientes de recetas
+            const allIngredients = Array.from(
+            new Set(
+                data.flatMap((recipe: any) =>
+                recipe.ingredients.map((i: any) => i.ingredient)
+                )
+            )
+            );
+            setTagsList(allIngredients as string[]);
+        })
+        .catch((err) => console.error("Error cargando recetas:", err));
+    }, []);
+    
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
             e.preventDefault(); // evita submit

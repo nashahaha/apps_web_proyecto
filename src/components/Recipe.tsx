@@ -5,11 +5,11 @@ import { useState } from "react";
 interface recipeProps {
     img_path: string; // ruta de la imagen
     rec_title: string;
-    prep_time: string;
+    category: string;
     difficulty: string;
 };
 
-const Recipe = ({ img_path, rec_title, prep_time, difficulty }: recipeProps) => {
+const Recipe = ({ img_path, rec_title, category, difficulty }: recipeProps) => {
     const [fav, setFav] = useState(false);
 
     return (
@@ -37,7 +37,7 @@ const Recipe = ({ img_path, rec_title, prep_time, difficulty }: recipeProps) => 
 
                 </div>
 
-                <p>Preparation time: {prep_time} | Difficulty: {difficulty}</p>
+                <p>Category: {category} | Difficulty: {difficulty}</p>
             </div>
 
 
