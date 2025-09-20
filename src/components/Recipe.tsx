@@ -7,6 +7,9 @@ interface recipeProps {
     rec_title: string;
     category: string;
     difficulty: string;
+    instructions: string;
+    ingredients: string[];
+    tags?: string[];
 };
 
 const Recipe = ({ img_path, rec_title, category, difficulty }: recipeProps) => {
