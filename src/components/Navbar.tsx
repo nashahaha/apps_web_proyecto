@@ -6,7 +6,7 @@ const Navbar = ({ view_name }: navbarProps) => {
     return (
         <div className="navbar bg-base-100 shadow-sm">
             <div className="flex-1">
-                <a className="btn btn-ghost text-xl">{view_name}</a>
+                <a className="text-xl">{view_name}</a>
             </div>
             <div className="flex-none">
                 <ul className="menu menu-horizontal px-1">
