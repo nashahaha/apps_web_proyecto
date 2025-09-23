@@ -28,9 +28,22 @@ npm run dev
 
 
 ## Instalar Daisy UI
-``
+
+Este proyecto utiliza DaisyUI, para instalarlo se debe ejecutar:
+```
 npm install tailwindcss@latest @tailwindcss/vite@latest daisyui@latest
-``
+```
 - Documentación componentes Daisy UI: https://daisyui.com/components/
 
-- Instalar icónos: `npm install @heroicons/react`
+
+## Paquetes requeridos
+
+- Instalar iconos: 
+```
+npm install @heroicons/react
+```
+
+- Instalar React Router: 
+```
+npm install react-router-dom
+```
