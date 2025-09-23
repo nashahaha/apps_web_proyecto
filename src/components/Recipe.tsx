@@ -6,13 +6,12 @@ interface recipeProps {
     img_path: string; // ruta de la imagen
     rec_title: string;
     category: string;
-    difficulty: string;
     instructions: string;
     ingredients: string[];
     tags?: string[];
 };
 
-const Recipe = ({ img_path, rec_title, category, difficulty }: recipeProps) => {
+const Recipe = ({ img_path, rec_title, category }: recipeProps) => {
     const [fav, setFav] = useState(false);
 
     return (
@@ -27,7 +26,10 @@ const Recipe = ({ img_path, rec_title, category, difficulty }: recipeProps) => {
                     <h1 className="card-title">{rec_title}
                         <button
                             className="btn btn-ghost btn-circle"
-                            onClick={() => setFav(!fav)}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setFav(!fav)
+                            }}
                         >
                             {fav ? (
                                 <StarSolid className="h-6 w-6 text-yellow-500" />
@@ -35,12 +37,10 @@ const Recipe = ({ img_path, rec_title, category, difficulty }: recipeProps) => {
                                 <StarOutline className="h-6 w-6 text-gray-500" />
                             )}
                         </button>
-
                     </h1>
-
                 </div>
 
-                <p>Category: {category} | Difficulty: {difficulty}</p>
+                <p>Category: {category}</p>
             </div>
 
 
