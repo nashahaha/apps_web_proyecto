@@ -38,7 +38,6 @@ const Navbar = () => {
         </nav>
       </div>
 
-      {/* separador minimalista */}
       <div className="h-0.5 bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-400" />
     </header>
   );

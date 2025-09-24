@@ -13,7 +13,7 @@ const getData = async (id: string): Promise<Recipe> => {
 
 const RecipeDetail = () => {
   const { id } = useParams<{ id: string }>();
-  const [recipe, setRecipe] = useState<Recipe | null>(null); // 👈 tipado correcto
+  const [recipe, setRecipe] = useState<Recipe | null>(null); 
   const [fav, setFav] = useState(false);
 
   useEffect(() => {

@@ -5,6 +5,7 @@ import type { Recipe } from "../types/Recipe";
 interface RecipeCardProps {
   recipe: Recipe;
   variant?: "card" | "detail";            
+  variant?: "card" | "detail";            
 }
 const RecipeCard = ({recipe}: RecipeCardProps) => {
     const {
