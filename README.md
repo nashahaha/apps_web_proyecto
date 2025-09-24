@@ -53,3 +53,9 @@ npm install @heroicons/react
 ```
 npm install react-router-dom
 ```
+## Integrantes 
+
+- Martín Avendaño F.
+- Ignacia Galaz Alvarado
+- Mariano Mora H.
+- Gabriela Urbina G.
