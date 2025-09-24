@@ -23,10 +23,10 @@ const RecipeDetail = () => {
 
   return (
     <div >
-      <Navbar view_name="Recipe Details" />
+      <Navbar />
       <div>
         {recipe && (
-          <div className="p-16">
+          <div className="pb-15">
 
             <div className="flex items-center justify-between p-4">
               {/* Back button */}

@@ -3,21 +3,21 @@ const Navbar = () => {
     <header className="sticky top-0 z-50">
       {/* barra principal, más baja y con color suave */}
       <div className="navbar bg-orange-200/95 text-slate-900 border-b border-orange-200 backdrop-blur supports-[backdrop-filter]:bg-orange-50/70 py-1">
-        <div className="flex-1 items-center gap-2">
-            {/* Galleta primero */}
-            <span
-                className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-orange-200/70 ring-1 ring-orange-300/60"
-                aria-hidden="true"
-                title="cookie"
-            >
-                🍪
-            </span>
+        <div className="flex-1 flex items-center gap-3 md:gap-4">
+          {/* Galleta primero */}
+          <span
+            className="inline-flex h-9 w-9 md:h-10 md:w-10 items-center justify-center rounded-full bg-orange-200/70 ring-1 ring-orange-300/60 shrink-0"
+            aria-hidden="true"
+            title="cookie"
+          >
+            🍪
+          </span>
 
-            {/* Título */}
-            <span className="btn btn-ghost px-0 normal-case text-3xl md:text-4xl font-extrabold font-display tracking-tight">
-                Ñom Ñom
-            </span>
-            </div>
+          {/* Título */}
+          <h1 className="inline-flex items-center leading-none text-3xl md:text-4xl font-extrabold font-display tracking-tight text-slate-900">
+            Ñom Ñom
+          </h1>
+        </div>
 
         <nav className="flex-none">
           <ul className="menu menu-horizontal px-1 text-sm">
