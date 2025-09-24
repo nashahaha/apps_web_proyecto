@@ -1,33 +1,33 @@
-import { useState, useEffect } from "react"
-import { Link, useParams } from "react-router-dom"
-import Navbar from "./Navbar"
-import Footer from "./Footer"
+import { useState, useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
+import Navbar from "./Navbar";
+import Footer from "./Footer";
 import FavoriteButton from "./FavoriteButton";
+import type { Recipe } from "../types/Recipe"; // 👈 importamos el tipo
 
-const getData = async (id: string) => {
-  const res = await fetch(`http://localhost:3001/recipes/${id}`)
-  return res.json()
-  //Falta manejar los codigos de error
-}
+const getData = async (id: string): Promise<Recipe> => {
+  const res = await fetch(`http://localhost:3001/recipes/${id}`);
+  return res.json() as Promise<Recipe>;
+  // Falta manejar los códigos de error si quieres robustez
+};
 
 const RecipeDetail = () => {
-  const { id } = useParams<{ id: string }>()
-  const [recipe, setRecipe] = useState<any>(null)
+  const { id } = useParams<{ id: string }>();
+  const [recipe, setRecipe] = useState<Recipe | null>(null); // 👈 tipado correcto
   const [fav, setFav] = useState(false);
+
   useEffect(() => {
     if (id) {
-      getData(id).then(data => setRecipe(data))
+      getData(id).then((data) => setRecipe(data));
     }
-  }, [id])
-
+  }, [id]);
 
   return (
-    <div >
+    <div>
       <Navbar />
       <div>
         {recipe && (
           <div className="pb-15">
-
             <div className="flex items-center justify-between p-4">
               {/* Back button */}
               <Link to={`/`} className="btn w-40">
@@ -42,10 +42,11 @@ const RecipeDetail = () => {
               {/* Favorite button */}
               <FavoriteButton
                 active={fav}
-                onToggle={() => setFav(v => !v)}
+                onToggle={() => setFav((v) => !v)}
                 size={28}
               />
             </div>
+
             <div className="card card-side justify-center items-start">
               <figure>
                 <img
@@ -56,14 +57,16 @@ const RecipeDetail = () => {
               </figure>
               <div className="card-body max-w-xl">
                 <p className="mt-4">Category: {recipe.category}</p>
+
                 <h2 className="mt-6 text-xl font-semibold">Ingredients:</h2>
                 <ul className="list-disc list-inside">
-                  {recipe.ingredients.map((item: { ingredient: string; measure: string }, index: number) => (
+                  {recipe.ingredients.map((item, index) => (
                     <li key={index}>
                       {item.ingredient} - {item.measure}
                     </li>
                   ))}
                 </ul>
+
                 <h2 className="mt-6 text-xl font-semibold">Instructions:</h2>
                 <p className="mt-2">{recipe.instructions}</p>
               </div>
@@ -73,7 +76,7 @@ const RecipeDetail = () => {
       </div>
       <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default RecipeDetail
+export default RecipeDetail;

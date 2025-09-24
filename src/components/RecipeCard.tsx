@@ -1,16 +1,19 @@
 import { useState } from "react";
 import FavoriteButton from "./FavoriteButton";
+import type { Recipe } from "../types/Recipe";
 
-interface recipeProps {
-    img_path: string; // ruta de la imagen
-    rec_title: string;
-    category: string;
-    instructions: string;
-    ingredients: string[];
-    tags?: string[];
-};
-
-const Recipe = ({ img_path, rec_title, category }: recipeProps) => {
+interface RecipeCardProps {
+  recipe: Recipe;
+  variant?: "card" | "detail";            // <- agregado (aunque no lo uses ahora)
+}
+const RecipeCard = ({recipe}: RecipeCardProps) => {
+    const {
+    name,
+    category,
+    image,
+    // dejamos el resto sin usar por ahora:
+    // id, area, instructions, tags, youtube, source, ingredients
+  } = recipe;
     const [fav, setFav] = useState(false);
 
     return (
@@ -18,8 +21,8 @@ const Recipe = ({ img_path, rec_title, category }: recipeProps) => {
       {/* Imagen con overlays */}
       <div className="relative w-full aspect-[4/3]">
         <img
-          src={img_path}
-          alt={rec_title}
+          src={image}
+          alt={name}
           className="w-full h-full object-cover"
         />
 
@@ -41,11 +44,11 @@ const Recipe = ({ img_path, rec_title, category }: recipeProps) => {
       <div className="card-body p-4">
         {/* Título máx. 2 líneas + … */}
         <h1 className="card-title text-base leading-tight line-clamp-2">
-          {rec_title}
+          {name}
         </h1>
       </div>
     </div>
     )
 };
 
-export default Recipe;
+export default RecipeCard;

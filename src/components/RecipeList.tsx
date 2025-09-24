@@ -1,29 +1,22 @@
-import { useState, useEffect } from "react";
-import Recipe from "./Recipe";
-import Navbar from "./Navbar";
-import Footer from "./Footer";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-
-interface RecipeData {
-  id: string;
-  name: string;
-  category: string;
-  image: string;
-}
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import RecipeCard from "../components/RecipeCard";
+import type { Recipe } from "../types/Recipe";
 
 const RecipeList = () => {
-  const [recipes, setRecipes] = useState<RecipeData[]>([]);
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch("http://localhost:3001/recipes")
       .then(res => res.json())
-      .then(data => setRecipes(data));
+      .then((data: Recipe[]) => setRecipes(data));
   }, []);
 
-  const navigate = useNavigate();
   return (
-    <div className="min-h-screen flex flex-col gap-6 ">
+    <div className="min-h-screen flex flex-col gap-6">
       <Navbar />
       <div className="px-10 pb-5 flex flex-wrap gap-4">
         {recipes.map(recipe => (
@@ -34,13 +27,8 @@ const RecipeList = () => {
             className="block hover:shadow-lg transition-shadow cursor-pointer"
           >
 
-            <Recipe
-              key={recipe.id}
-              img_path={recipe.image}
-              rec_title={recipe.name}
-              category={recipe.category}
-              instructions={""}
-              ingredients={[]}
+            <RecipeCard
+              recipe={recipe}
             />
           </div>
 
