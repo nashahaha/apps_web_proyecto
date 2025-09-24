@@ -4,15 +4,14 @@ import type { Recipe } from "../types/Recipe";
 
 interface RecipeCardProps {
   recipe: Recipe;
-  variant?: "card" | "detail";            // <- agregado (aunque no lo uses ahora)
+  variant?: "card" | "detail";            
 }
 const RecipeCard = ({recipe}: RecipeCardProps) => {
     const {
     name,
     category,
     image,
-    // dejamos el resto sin usar por ahora:
-    // id, area, instructions, tags, youtube, source, ingredients
+
   } = recipe;
     const [fav, setFav] = useState(false);
 
