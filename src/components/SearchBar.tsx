@@ -25,7 +25,7 @@ const SearchBar = () => {
     
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
-            e.preventDefault(); // evita submit
+            e.preventDefault();
             addTag();
         }
     };
@@ -35,7 +35,7 @@ const SearchBar = () => {
         if (newTag !== "" && !tags.includes(newTag) && tagsList.includes(newTag)) {
             setTags((prev) => [...prev, newTag]);
         }
-        setInputValue(""); // limpia input
+        setInputValue("");
     }
 
 
@@ -47,7 +47,7 @@ const SearchBar = () => {
         const value = e.target.value;
         setInputValue(value);
 
-        // Filtra opciones según el texto
+        // Filtrar opciones según el texto
         if (value.trim() === "") {
             setFiltradas([]);
         } else {
