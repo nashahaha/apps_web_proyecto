@@ -4,7 +4,7 @@ interface navbarProps {
 
 const Navbar = ({ view_name }: navbarProps) => {
     return (
-        <div className="navbar bg-base-100 shadow-sm">
+        <div className="navbar bg-base-100 shadow-sm fixed top-0 left-0 right-0 z-50 h-16">
             <div className="flex-1">
                 <a className="text-xl">{view_name}</a>
             </div>

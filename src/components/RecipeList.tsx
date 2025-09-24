@@ -23,7 +23,7 @@ const RecipeList = () => {
 
   const navigate = useNavigate();
   return (
-    <div>
+    <div className="min-h-screen flex flex-col pt-20">
       <Navbar view_name="Recipe List" />
       <div className="px-10 pb-5 flex flex-wrap gap-4">
         {recipes.map(recipe => (

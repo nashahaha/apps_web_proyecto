@@ -2,31 +2,50 @@ import { useState, useEffect } from "react"
 import { Link, useParams } from "react-router-dom"
 import Navbar from "./Navbar"
 import Footer from "./Footer"
+import FavoriteButton from "./FavoriteButton";
 
 const getData = async (id: string) => {
   const res = await fetch(`http://localhost:3001/recipes/${id}`)
   return res.json()
+  //Falta manejar los codigos de error
 }
 
 const RecipeDetail = () => {
   const { id } = useParams<{ id: string }>()
   const [recipe, setRecipe] = useState<any>(null)
-
+  const [fav, setFav] = useState(false);
   useEffect(() => {
     if (id) {
       getData(id).then(data => setRecipe(data))
     }
   }, [id])
+
+
   return (
     <div >
       <Navbar view_name="Recipe Details" />
-      <Link to={`/`} className="btn flex justify-start m-4 w-40">
-        Back to Recipe List
-      </Link>
       <div>
         {recipe && (
-          <div className="p-4">
-            <h1 className="flex justify-center text-2xl font-bold p-4">{recipe.name}</h1>
+          <div className="p-16">
+
+            <div className="flex items-center justify-between p-4">
+              {/* Back button */}
+              <Link to={`/`} className="btn w-40">
+                Back to Recipe List
+              </Link>
+
+              {/* Title */}
+              <h1 className="text-2xl font-bold text-center flex-1">
+                {recipe.name}
+              </h1>
+
+              {/* Favorite button */}
+              <FavoriteButton
+                active={fav}
+                onToggle={() => setFav(v => !v)}
+                size={28}
+              />
+            </div>
             <div className="card card-side justify-center items-start">
               <figure>
                 <img

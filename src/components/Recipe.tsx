@@ -1,6 +1,5 @@
-import { StarIcon as StarOutline } from "@heroicons/react/24/outline";
-import { StarIcon as StarSolid } from "@heroicons/react/24/solid";
 import { useState } from "react";
+import FavoriteButton from "./FavoriteButton";
 
 interface recipeProps {
     img_path: string; // ruta de la imagen
@@ -15,36 +14,37 @@ const Recipe = ({ img_path, rec_title, category }: recipeProps) => {
     const [fav, setFav] = useState(false);
 
     return (
-        <div className="card bg-base-100 w-96 shadow-xl">
-            <figure className="px-10 pt-10">
-                <img src={img_path} className="rounded-xl"></img>
-            </figure>
+        <div className="card bg-base-100 w-80 h-[390px] shadow-xl overflow-hidden">
+      {/* Imagen con overlays */}
+      <div className="relative w-full aspect-[4/3]">
+        <img
+          src={img_path}
+          alt={rec_title}
+          className="w-full h-full object-cover"
+        />
 
-
-            <div className="card-body">
-                <div >
-                    <h1 className="card-title">{rec_title}
-                        <button
-                            className="btn btn-ghost btn-circle"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                setFav(!fav)
-                            }}
-                        >
-                            {fav ? (
-                                <StarSolid className="h-6 w-6 text-yellow-500" />
-                            ) : (
-                                <StarOutline className="h-6 w-6 text-gray-500" />
-                            )}
-                        </button>
-                    </h1>
-                </div>
-
-                <p>Category: {category}</p>
-            </div>
-
-
+        {/* Favoritos: arriba-derecha */}
+        <div className="absolute top-2 right-2">
+          <FavoriteButton
+            active={fav}
+            onToggle={() => setFav(v => !v)}
+            stopPropagation
+          />
         </div>
+
+        {/* Categoría: abajo-izquierda */}
+        <span className="absolute left-2 bottom-2 px-2 py-1 rounded-md bg-black/70 text-white text-xs font-medium">
+          {category}
+        </span>
+      </div>
+
+      <div className="card-body p-4">
+        {/* Título máx. 2 líneas + … */}
+        <h1 className="card-title text-base leading-tight line-clamp-2">
+          {rec_title}
+        </h1>
+      </div>
+    </div>
     )
 };
 
