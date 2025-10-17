@@ -1,5 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
+import cookieParser from "cookie-parser";
 import config from "./utils/config.js";
 import logger from "./utils/logger.js";
 import recipeRouter from "./controllers/recipes.js"; 
@@ -21,6 +22,7 @@ if (config.MONGODB_URI) {
 }
 
 app.use(express.json());
+app.use(cookieParser());
 app.use("/api/recipes", recipeRouter);
 app.use("/api/auth", authRouter);
 app.use(middleware.requestLogger);
