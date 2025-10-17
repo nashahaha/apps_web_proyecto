@@ -4,6 +4,7 @@ import config from "./utils/config.js";
 import logger from "./utils/logger.js";
 import recipeRouter from "./controllers/recipes.js"; 
 import middleware from "./utils/middleware.js";
+import authRouter from "./controllers/auth.js";
 
 const app = express();
 
@@ -21,6 +22,7 @@ if (config.MONGODB_URI) {
 
 app.use(express.json());
 app.use("/api/recipes", recipeRouter);
+app.use("/api/auth", authRouter);
 app.use(middleware.requestLogger);
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
