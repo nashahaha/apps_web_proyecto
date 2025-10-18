@@ -7,6 +7,7 @@
     "start": "tsx src/index.ts",
     "dev": "tsx --watch src/index.ts",
     "populate-db": "tsx scripts/populate-db.ts",
+    "clear-db": "tsx scripts/clear-db.ts",
     "test": "cross-env NODE_ENV=test tsx --test tests/**/*.test.ts"
   },
   "keywords": [],

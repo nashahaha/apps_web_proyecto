@@ -14,14 +14,31 @@ Primero correr backend:
 ```
 cd backend
 npm install
-npm install json-server
-npm start
 ````
+
+Primero poblar la base de datos:
+
+```
+npm run populate-db.ts
+```
+
+En caso de querer borrar los datos iniciales:
+
+```
+npm run clear-db.ts
+```
+
+Finalmente correr backend 
+
+```
+npm run dev
+```
+
 Para ver los endpoint disponibles
 
 ```
-http://localhost:3001/recipes → todas las recetas
-http://localhost:3001/recipes/52966 → receta específica 
+http://localhost:3001/api/recipes → todas las recetas
+http://localhost:3001/api/recipes/ID → receta específica 
 ```
 
 Luego correr frontend:
