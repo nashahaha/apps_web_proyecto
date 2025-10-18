@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 import config from "./utils/config.js";
 import logger from "./utils/logger.js";
 import recipeRouter from "./controllers/recipes.js"; 
@@ -8,6 +9,9 @@ import middleware from "./utils/middleware.js";
 import authRouter from "./controllers/auth.js";
 
 const app = express();
+
+//configurar conexion de front
+app.use(cors({origin: "http://localhost:5173",credentials: true}));
 
 mongoose.set("strictQuery", false);
 if (config.MONGODB_URI) {

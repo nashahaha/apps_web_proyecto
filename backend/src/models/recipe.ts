@@ -25,8 +25,8 @@ const ingredientSchema = new mongoose.Schema<Ingredient>({
 
 ingredientSchema.set("toJSON", {
     transform: (document, returnedObject) => {
-        delete (returnedObject as any)._id;
-        delete (returnedObject as any).__v;
+        const { _id, __v, ...rest } = returnedObject;
+        return rest;
     },
 });
 
@@ -44,9 +44,8 @@ const recipeSchema = new mongoose.Schema<Recipe>({
 
 recipeSchema.set("toJSON", {
     transform: (document, returnedObject) => {
-        returnedObject.id = returnedObject._id.toString();
-        delete (returnedObject as any)._id;
-        delete (returnedObject as any).__v;
+        const { _id, __v, id, ...rest } = returnedObject;
+        return { id: _id.toString(), ...rest };
     },
 });
 

@@ -6,7 +6,7 @@ import FavoriteButton from "./FavoriteButton";
 import type { Recipe } from "../types/Recipe"; // 👈 importamos el tipo
 
 const getData = async (id: string): Promise<Recipe> => {
-  const res = await fetch(`http://localhost:3001/recipes/${id}`);
+  const res = await fetch(`http://localhost:3001/api/recipes/${id}`);
   return res.json() as Promise<Recipe>;
   // Falta manejar los códigos de error si quieres robustez
 };

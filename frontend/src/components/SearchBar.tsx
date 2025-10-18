@@ -7,7 +7,7 @@ const SearchBar = () => {
     const [filterTags, setFiltradas] = useState<string[]>([]); // ingredientes agregados
 
     useEffect(() => {
-        fetch("http://localhost:3001/recipes") 
+        fetch("http://localhost:3001/api/recipes") 
         .then((res) => res.json())
         .then((data) => {
             // extraer ingredientes de recetas
