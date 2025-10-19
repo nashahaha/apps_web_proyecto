@@ -59,7 +59,6 @@ const Navbar = () => {
                   <ul className="bg-base-100 rounded-t-none p-2 shadow">
                     <li><Link to="/profile" className="link link-hover">Ver Perfil</Link></li>
                     <li><a className="link link-hover">My Recipes</a></li>
-                    <li><a className="link link-hover">Favorites</a></li>
                     <li>
                       <button onClick={handleLogout} className="link link-hover text-error">
                         Logout
@@ -70,10 +69,10 @@ const Navbar = () => {
               </li>
             ) : (
               <>
-                <li><Link to="/login" className="btn btn-primary btn-sm">Login</Link></li>
+                <li><Link to="/login" className="btn bg-orange-500 hover:bg-orange-600 text-white border-orange-500 hover:border-orange-600 btn-sm">Login</Link></li>
       
                 <li>
-                  <Link to="/register" className="btn btn-primary btn-sm">
+                  <Link to="/register" className="btn bg-orange-500 hover:bg-orange-600 text-white border-orange-500 hover:border-orange-600 btn-sm">
                     Create Account
                   </Link>
                 </li>

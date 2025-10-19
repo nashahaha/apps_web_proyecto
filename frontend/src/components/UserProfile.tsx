@@ -1,6 +1,7 @@
 import { useAuth } from '../context/AuthContext';
 import Footer from './Footer';
 import Navbar from './Navbar';
+import UserFavorites from './UserFavorites';
 
 const UserProfile = () => {
     const { user } = useAuth();
@@ -71,21 +72,7 @@ const UserProfile = () => {
             </div>
             </div>
             <div className="px-6 py-8">
-            {/* Placeholder para las recetas favoritas */}
-            <div className="text-center py-12">
-                <div className="mx-auto h-12 w-12 text-gray-400 mb-4">
-                    ❤️
-                </div>
-                <h3 className="mt-2 text-sm font-medium text-gray-900">No tienes recetas favoritas</h3>
-                <p className="mt-1 text-sm text-gray-500">
-                Explora recetas y marca como favoritas las que más te gusten.
-                </p>
-                <div className="mt-6">
-                    <button type="button" onClick={() => window.location.href = '/'} className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-orange-700 bg-orange-100 hover:bg-orange-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors">
-                        🔍 Explorar recetas
-                    </button>
-                </div>
-            </div>
+                <UserFavorites />
             </div>
         </div>
         </div>
