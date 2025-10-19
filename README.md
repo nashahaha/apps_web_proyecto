@@ -19,13 +19,13 @@ npm install
 Primero poblar la base de datos:
 
 ```
-npm run populate-db.ts
+npm run populate-db
 ```
 
 En caso de querer borrar los datos iniciales:
 
 ```
-npm run clear-db.ts
+npm run clear-db
 ```
 
 Finalmente correr backend 
