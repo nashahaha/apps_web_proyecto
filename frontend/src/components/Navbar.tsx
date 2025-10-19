@@ -57,6 +57,7 @@ const Navbar = () => {
                 <details>
                   <summary className="cursor-pointer">{user?.name || 'My Profile'}</summary>
                   <ul className="bg-base-100 rounded-t-none p-2 shadow">
+                    <li><Link to="/profile" className="link link-hover">Ver Perfil</Link></li>
                     <li><a className="link link-hover">My Recipes</a></li>
                     <li><a className="link link-hover">Favorites</a></li>
                     <li>
