@@ -1,4 +1,19 @@
+import { useAuth } from '../context/AuthContext';
+import { Link, useNavigate } from 'react-router-dom';
+
 const Navbar = () => {
+  const { user, isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate('/login');
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  };
+
   return (
     <header className="sticky top-0 z-50">
       {/* barra principal, más baja y con color suave */}
@@ -14,14 +29,16 @@ const Navbar = () => {
           </span>
 
           {/* Título */}
-          <h1 className="inline-flex items-center leading-none text-3xl md:text-4xl font-extrabold font-display tracking-tight text-slate-900">
-            Ñom Ñom
-          </h1>
+          <Link to="/">
+            <h1 className="inline-flex items-center leading-none text-3xl md:text-4xl font-extrabold font-display tracking-tight text-slate-900 hover:text-orange-600 transition-colors">
+              Ñom Ñom
+            </h1>
+          </Link>
         </div>
 
         <nav className="flex-none">
           <ul className="menu menu-horizontal px-1 text-sm">
-            <li><a className="link link-hover">Home</a></li>
+            <li><Link to="/" className="link link-hover">Home</Link></li>
             <li>
               <details>
                 <summary className="cursor-pointer">Recipes</summary>
@@ -33,7 +50,34 @@ const Navbar = () => {
                 </ul>
               </details>
             </li>
-            <li><a className="link link-hover">My profile</a></li>
+            
+            {/* Mostrar diferentes opciones según autenticación */}
+            {isAuthenticated ? (
+              <li>
+                <details>
+                  <summary className="cursor-pointer">{user?.name || 'My Profile'}</summary>
+                  <ul className="bg-base-100 rounded-t-none p-2 shadow">
+                    <li><a className="link link-hover">My Recipes</a></li>
+                    <li><a className="link link-hover">Favorites</a></li>
+                    <li>
+                      <button onClick={handleLogout} className="link link-hover text-error">
+                        Logout
+                      </button>
+                    </li>
+                  </ul>
+                </details>
+              </li>
+            ) : (
+              <>
+                <li><Link to="/login" className="btn btn-primary btn-sm">Login</Link></li>
+      
+                <li>
+                  <Link to="/register" className="btn btn-primary btn-sm">
+                    Create Account
+                  </Link>
+                </li>
+              </>
+            )}
           </ul>
         </nav>
       </div>

@@ -1,5 +1,8 @@
 import express from "express";
 import RecipeModel from "../models/recipe.js";
+import User from "../models/users.js";
+import { withUser } from "../utils/middleware.js";
+import type { Request, Response, NextFunction } from "express";
 
 const router = express.Router();
 
@@ -23,14 +26,17 @@ router.get("/:id", async (request, response, next) => {
   }
 });
 
-//crear nueva receta
-router.post("/", async (request, response, next) => {
+//crear nueva receta (requiere autenticación)
+router.post("/", withUser, async (request: Request, response: Response, next: NextFunction) => {
     const body = request.body;
+    const userId = request.userId;
+
     if (!body.name || !body.instructions || !body.ingredients || body.ingredients.length === 0) {
         return response.status(400).json({
             error: "Recipe content missing required fields (name, instructions, or ingredients)",
         });
     }
+
     const recipe = new RecipeModel({
         name: body.name,
         category: body.category || "General",
@@ -41,53 +47,81 @@ router.post("/", async (request, response, next) => {
         youtube: body.youtube,
         source: body.source,
         ingredients: body.ingredients,
+        author: userId,
     });
+
     try{
         const savedRecipe = await recipe.save();
+
+        // Agregar la receta a myRecipes del usuario
+        const user = await User.findById(userId);
+        if (user) {
+            user.myRecipes.push(savedRecipe._id as any);
+            await user.save();
+        }
+
         response.status(201).json(savedRecipe);
     } catch (exception) {
         next(exception);
     }
 });
 
-//eliminar receta
-router.delete("/:id", async (request, response, next) => {
+//eliminar receta (solo el autor puede eliminar)
+router.delete("/:id", withUser, async (request: Request, response: Response, next: NextFunction) => {
     try {
-        const deletedRecipe = await RecipeModel.findByIdAndDelete(request.params.id);
-        if (!deletedRecipe) {
+        const userId = request.userId;
+        const recipe = await RecipeModel.findById(request.params.id);
+
+        if (!recipe) {
             return response.status(404).json({ error: "Recipe not found" });
         }
+
+        // Verificar que el usuario es el autor
+        if (recipe.author && recipe.author.toString() !== userId) {
+            return response.status(403).json({ error: "You can only delete your own recipes" });
+        }
+
+        await RecipeModel.findByIdAndDelete(request.params.id);
+
+        // Remover de myRecipes del usuario
+        const user = await User.findById(userId);
+        if (user) {
+            user.myRecipes = user.myRecipes.filter(
+                id => id.toString() !== request.params.id
+            );
+            await user.save();
+        }
+
         response.status(204).end();
     } catch (exception) {
         next(exception);
     }
 });
 
-//actualizar receta
-router.put("/:id", async (request, response, next) => {
+//actualizar receta (solo el autor puede actualizar)
+router.put("/:id", withUser, async (request: Request, response: Response, next: NextFunction) => {
     const { name, category, area, instructions, image, tags, youtube, source, ingredients } = request.body;
-    const recipe = {
-        name,
-        category,
-        area,
-        instructions,
-        image,
-        tags,
-        youtube,
-        source,
-        ingredients,
-    };
+    const userId = request.userId;
+
     try {
-        const updatedRecipe = await RecipeModel.findByIdAndUpdate(
-        request.params.id,
-        recipe,
-        { new: true, runValidators: true, context: 'query' }
-        );
-        if (updatedRecipe) {
-            response.json(updatedRecipe);
-        } else {
-            response.status(404).end();
+        const recipe = await RecipeModel.findById(request.params.id);
+
+        if (!recipe) {
+            return response.status(404).json({ error: "Recipe not found" });
         }
+
+        // Verificar que el usuario es el autor
+        if (recipe.author && recipe.author.toString() !== userId) {
+            return response.status(403).json({ error: "You can only update your own recipes" });
+        }
+
+        const updatedRecipe = await RecipeModel.findByIdAndUpdate(
+            request.params.id,
+            { name, category, area, instructions, image, tags, youtube, source, ingredients },
+            { new: true, runValidators: true, context: 'query' }
+        );
+
+        response.json(updatedRecipe);
     } catch (exception) {
         next(exception);
     }

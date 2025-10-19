@@ -7,6 +7,7 @@ import logger from "./utils/logger.js";
 import recipeRouter from "./controllers/recipes.js"; 
 import middleware from "./utils/middleware.js";
 import authRouter from "./controllers/auth.js";
+import usersRouter from "./controllers/users.js";
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use("/api/recipes", recipeRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/users", usersRouter);
 app.use(middleware.requestLogger);
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);

@@ -16,6 +16,7 @@ export interface Recipe {
     youtube?: string;
     source?: string;
     ingredients: Ingredient[];
+    author?: mongoose.Types.ObjectId;
 }
 
 const ingredientSchema = new mongoose.Schema<Ingredient>({
@@ -39,7 +40,11 @@ const recipeSchema = new mongoose.Schema<Recipe>({
     tags: { type: [String] },
     youtube: { type: String },
     source: { type: String },
-    ingredients: { type: [ingredientSchema], required: true }, 
+    ingredients: { type: [ingredientSchema], required: true },
+    author: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'User'
+    },
 });
 
 recipeSchema.set("toJSON", {
