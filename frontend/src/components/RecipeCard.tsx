@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import FavoriteButton from "./FavoriteButton";
 import type { Recipe } from "../types/Recipe";
 import userService from "../services/userService";
+import FavoriteToggle from "./FavoriteToggle";
 
 
 interface RecipeCardProps {
@@ -10,39 +11,6 @@ interface RecipeCardProps {
 }
 const RecipeCard = ({recipe}: RecipeCardProps) => {
   const { id, name, category, image } = recipe;
-  const [fav, setFav] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const checkIfFavorite = async () => {
-      try {
-        const favorites = await userService.getFavoriteRecipes();
-        const isFav = favorites.some(fav => fav.id === id);
-        setFav(isFav);
-      } catch (err) {
-        console.error("Error fetching favorites", err);
-      }
-    };
-    checkIfFavorite();
-  }, [id]);
-
-  const handleToggleFavorite = async () => {
-    try {
-      setLoading(true);
-      if (fav) {
-        await userService.removeFromFavorites(id);
-        setFav(false);
-      } else {
-        await userService.addToFavorites(id);
-        setFav(true);
-      }
-    } catch (err) {
-      console.error("Error updating favorite:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <div className="card bg-base-100 w-80 h-[390px] shadow-xl overflow-hidden">
     {/* Imagen con overlays */}
@@ -55,11 +23,7 @@ const RecipeCard = ({recipe}: RecipeCardProps) => {
 
       {/* Favoritos: arriba-derecha */}
       <div className="absolute top-2 right-2">
-        <FavoriteButton
-          active={fav}
-          onToggle={handleToggleFavorite}
-          stopPropagation
-        />
+        <FavoriteToggle recipeId={id} stopPropagation />
       </div>
 
       {/* Categoría: abajo-izquierda */}

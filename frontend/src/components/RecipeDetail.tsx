@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import FavoriteButton from "./FavoriteButton";
+import FavoriteToggle from "./FavoriteToggle";
 import type { Recipe } from "../types/Recipe"; 
 
 const getData = async (id: string): Promise<Recipe> => {
@@ -40,11 +40,7 @@ const RecipeDetail = () => {
               </h1>
 
               {/* Favorite button */}
-              <FavoriteButton
-                active={fav}
-                onToggle={() => setFav((v) => !v)}
-                size={28}
-              />
+              {id && <FavoriteToggle recipeId={id} size={28} />}
             </div>
 
             <div className="card card-side justify-center items-start">
