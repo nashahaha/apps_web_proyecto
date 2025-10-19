@@ -1,7 +1,4 @@
-import { useEffect, useState } from "react";
-import FavoriteButton from "./FavoriteButton";
 import type { Recipe } from "../types/Recipe";
-import userService from "../services/userService";
 import FavoriteToggle from "./FavoriteToggle";
 
 
