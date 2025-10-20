@@ -7,7 +7,7 @@ function RecipesExplorer() {
 
     return (
         <>
-            <Navbar view_name={'Recipes Explorer'} />
+            <Navbar />
             <div className='flex flex-col items-center bg-base-200'>
                 <SearchBar />
                 <RecipeList />
