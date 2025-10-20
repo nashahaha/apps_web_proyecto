@@ -80,8 +80,8 @@ const Login = () => {
                             </div>
 
                             <div className="form-control mt-6">
-                                <button 
-                                    type="submit" 
+                                <button
+                                    type="submit"
                                     className={`btn bg-orange-500 hover:bg-orange-600 text-white border-orange-500 hover:border-orange-600 w-full ${loading ? 'loading' : ''}`}
                                     disabled={loading}
                                 >
