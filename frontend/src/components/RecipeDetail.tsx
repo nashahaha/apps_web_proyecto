@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import FavoriteButton from "./FavoriteButton";
+import FavoriteToggle from "./FavoriteToggle";
 import type { Recipe } from "../types/Recipe"; // importamos el tipo
 
 const getData = async (id: string): Promise<Recipe> => {
