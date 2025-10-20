@@ -46,9 +46,9 @@ const RecipeDetail = () => {
             <div className="card card-side justify-center items-start">
               <figure>
                 <img
-                  src={recipe.image}
+                  src={`http://localhost:3001${recipe.image}`}
                   alt={recipe.name}
-                  className="w-full object-contain rounded-lg"
+                  style={{ maxWidth: "500px", width: "auto" }}
                 />
               </figure>
               <div className="card-body max-w-xl">

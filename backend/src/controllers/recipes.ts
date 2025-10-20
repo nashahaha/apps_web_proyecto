@@ -4,8 +4,16 @@ import User from "../models/users.js";
 import { withUser } from "../utils/middleware.js";
 import type { Request, Response, NextFunction } from "express";
 import multer from 'multer';
+import path from "path";
 
-const upload = multer();
+const storage = multer.diskStorage({
+    destination: path.join(process.cwd(), "uploads"),
+    filename: (req, file, cb) => {
+        cb(null, `${Date.now()}-${file.originalname}`);
+    },
+});
+
+const upload = multer({ storage });
 const router = express.Router();
 
 //get todas las recetas
@@ -32,7 +40,7 @@ router.get("/:id", async (request, response, next) => {
 router.post("/", withUser, upload.single('image'), async (request: Request, response: Response, next: NextFunction) => {
     const body = request.body;
     const userId = request.userId;
-    const imageFile = request.file;
+    const imagePath = request.file ? `/uploads/${request.file.filename}` : null;
     const ingredients = JSON.parse(body.ingredients);
 
     if (!body.name || !body.instructions || !ingredients || body.ingredients.length === 0) {
@@ -49,7 +57,7 @@ router.post("/", withUser, upload.single('image'), async (request: Request, resp
         category: body.category || "General",
         area: body.area,
         instructions: body.instructions,
-        image: imageFile ? imageFile.buffer : undefined,
+        image: imagePath,
         tags: body.tags,
         youtube: body.youtube,
         source: body.source,

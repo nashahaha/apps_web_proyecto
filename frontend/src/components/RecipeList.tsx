@@ -5,7 +5,6 @@ import Footer from "../components/Footer";
 import RecipeCard from "../components/RecipeCard";
 import type { Recipe } from "../types/Recipe";
 import SearchBar from "./SearchBar";
-import NewRecipeForm from "./NewRecipeForm";
 
 const RecipeList = () => {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
