@@ -4,13 +4,39 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "json-server --watch db.json --port 3001"
+    "start": "tsx src/index.ts",
+    "dev": "tsx --watch src/index.ts",
+    "populate-db": "tsx scripts/populate-db.ts",
+    "clear-db": "tsx scripts/clear-db.ts",
+    "test": "cross-env NODE_ENV=test tsx --test tests/**/*.test.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "dependencies": {
-    "json-server": "^1.0.0-beta.3"
+    "@tailwindcss/vite": "^4.1.14",
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "daisyui": "^5.3.7",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "json-server": "^1.0.0-beta.3",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.19.1",
+    "tailwindcss": "^4.1.14"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/cookie-parser": "^1.4.9",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^24.7.2",
+    "@types/supertest": "^6.0.3",
+    "cross-env": "^10.1.0",
+    "supertest": "^7.1.4",
+    "tsx": "^4.20.6"
   }
 }

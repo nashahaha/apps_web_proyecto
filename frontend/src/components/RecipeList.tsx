@@ -12,7 +12,7 @@ const RecipeList = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:3001/recipes")
+    fetch("http://localhost:3001/api/recipes")
       .then(res => res.json())
       .then((data: Recipe[]) => setRecipes(data));
   }, []);
