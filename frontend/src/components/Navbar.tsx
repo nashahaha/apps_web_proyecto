@@ -36,7 +36,7 @@ const Navbar = () => {
           </Link>
         </div>
 
-        <nav className="flex-none">
+        <nav className="flex flex-col gap-2">
           <ul className="menu menu-horizontal px-1 text-sm">
             <li><Link to="/" className="link link-hover">Home</Link></li>
             <li>
@@ -50,7 +50,7 @@ const Navbar = () => {
                 </ul>
               </details>
             </li>
-            
+
             {/* Mostrar diferentes opciones según autenticación */}
             {isAuthenticated ? (
               <li>
@@ -70,7 +70,7 @@ const Navbar = () => {
             ) : (
               <>
                 <li><Link to="/login" className="btn bg-orange-500 hover:bg-orange-600 text-white border-orange-500 hover:border-orange-600 btn-sm">Login</Link></li>
-      
+
                 <li>
                   <Link to="/register" className="btn bg-orange-500 hover:bg-orange-600 text-white border-orange-500 hover:border-orange-600 btn-sm">
                     Create Account

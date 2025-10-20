@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import RecipeCard from "../components/RecipeCard";
 import type { Recipe } from "../types/Recipe";
+import SearchBar from "./SearchBar";
 
 const RecipeList = () => {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
@@ -18,6 +19,7 @@ const RecipeList = () => {
   return (
     <div className="min-h-screen flex flex-col gap-6">
       <Navbar />
+      <SearchBar />
       <div className="px-10 pb-5 flex flex-wrap gap-4">
         {recipes.map(recipe => (
 

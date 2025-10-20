@@ -10,69 +10,72 @@ const router = express.Router();
 
 // Registro de usuario
 router.post("/register", async (request, response, next) => {
-    const { name, email, password } = request.body;
+  const { name, email, password } = request.body;
 
-    if (!name || !email || !password) {
-        return response.status(400).json({ error: "Missing required fields" });
+  if (!name || !email || !password) {
+    return response.status(400).json({ error: "Missing required fields" });
+  }
+
+  try {
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return response.status(409).json({ error: "Email already in use" });
     }
 
-    try {
-        const existingUser = await User.findOne({ email });
-        if (existingUser) {
-            return response.status(409).json({ error: "Email already in use" });
-        }
-
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = new User({ name, email, passwordHash: hashedPassword });
-        const savedUser = await newUser.save();
-        response.status(201).json(savedUser);
-    } catch (exception) {
-        next(exception);
-    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new User({ name, email, passwordHash: hashedPassword });
+    const savedUser = await newUser.save();
+    response.status(201).json(savedUser);
+  } catch (exception) {
+    next(exception);
+  }
 });
 
 // Login de usuario
 router.post("/login", async (request, response, next) => {
-    const { email, password } = request.body;
+  const { email, password } = request.body;
 
-    if (!email || !password) {
-        return response.status(400).json({ error: "Please enter email and password" });
+  if (!email || !password) {
+    return response.status(400).json({ error: "Please enter email and password" });
+  }
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return response.status(401).json({ error: "Invalid email" });
     }
 
-    try {
-        const user = await User.findOne({ email });
-        if (!user) {
-            return response.status(401).json({ error: "Invalid email" });
-        }
-
-        const passwordValid = await bcrypt.compare(password, user.passwordHash);
-        if (!passwordValid) {
-            return response.status(401).json({ error: "Invalid password" });
-        }
-        
-        const userForToken = {
-            email: user.email,
-            csrf: crypto.randomUUID(),
-            id: user._id,
-        }
-    
-        const token = jwt.sign(userForToken, config.JWT_SECRET, { expiresIn: 60 * 60 });
-        response.setHeader("X-CSRF-Token", userForToken.csrf);
-        response.cookie("token", token, { 
-            httpOnly: true, 
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "lax"
-        });
-        
-        // Devolver info del usuario (sin password)
-        response.status(200).json({
-            id: user.id,
-            name: user.name,
-            email: user.email
-        });
-    } catch (exception) {
-        next(exception);
+    const passwordValid = await bcrypt.compare(password, user.passwordHash);
+    if (!passwordValid) {
+      return response.status(401).json({ error: "Invalid password" });
     }
+
+    const csrfToken = crypto.randomUUID();
+    const userForToken = {
+      email: user.email,
+      csrf: csrfToken,
+      id: user._id,
+    }
+
+    const token = jwt.sign(userForToken, config.JWT_SECRET, { expiresIn: 60 * 60 });
+
+    response.setHeader("X-CSRF-Token", userForToken.csrf);
+    response.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax"
+    });
+
+    // Devolver info del usuario (sin password)
+    response.status(200).json({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      csrf: csrfToken
+    });
+  } catch (exception) {
+    next(exception);
+  }
 });
 
 router.get("/me", withUser, async (request, response, next) => {

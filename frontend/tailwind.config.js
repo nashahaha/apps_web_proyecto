@@ -3,7 +3,7 @@ module.exports = {
   content: ["./index.html", "./src/**/*.{ts,tsx,js,jsx}"],
   theme: {
     extend: {
-            fontFamily: {
+      fontFamily: {
         sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
         display: ["Lobster", "Poppins", "ui-sans-serif", "system-ui", "sans-serif"],
         mono: ["JetBrains Mono", "ui-monospace", "SFMono-Regular", "monospace"],
@@ -15,7 +15,7 @@ module.exports = {
     themes: [
       {
         chamo: {
-          primary: "#6D28D9",
+          primary: "#ab491b",
           "primary-content": "#FFFFFF",
           secondary: "#22C55E",
           "secondary-content": "#05240F",
@@ -35,7 +35,7 @@ module.exports = {
       },
       {
         chamoLight: {
-          primary: "#7C3AED",
+          primary: "#ab491b",
           "primary-content": "#FFFFFF",
           secondary: "#16A34A",
           "secondary-content": "#05240F",

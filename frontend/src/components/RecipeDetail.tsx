@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import FavoriteToggle from "./FavoriteToggle";
-import type { Recipe } from "../types/Recipe"; 
+import type { Recipe } from "../types/Recipe"; // importamos el tipo
 
 const getData = async (id: string): Promise<Recipe> => {
   const res = await fetch(`http://localhost:3001/api/recipes/${id}`);
@@ -13,7 +13,7 @@ const getData = async (id: string): Promise<Recipe> => {
 
 const RecipeDetail = () => {
   const { id } = useParams<{ id: string }>();
-  const [recipe, setRecipe] = useState<Recipe | null>(null); 
+  const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [fav, setFav] = useState(false);
 
   useEffect(() => {
@@ -21,6 +21,11 @@ const RecipeDetail = () => {
       getData(id).then((data) => setRecipe(data));
     }
   }, [id]);
+
+  const imageUrl = recipe?.image.startsWith("/uploads/")
+    ? `http://localhost:3001${recipe.image}`
+    : recipe?.image;
+
 
   return (
     <div>
@@ -46,9 +51,9 @@ const RecipeDetail = () => {
             <div className="card card-side justify-center items-start">
               <figure>
                 <img
-                  src={recipe.image}
+                  src={imageUrl}
                   alt={recipe.name}
-                  className="w-full object-contain rounded-lg"
+                  style={{ maxWidth: "500px", width: "auto" }}
                 />
               </figure>
               <div className="card-body max-w-xl">

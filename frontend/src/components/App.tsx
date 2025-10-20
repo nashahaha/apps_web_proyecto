@@ -4,6 +4,7 @@ import RecipeDetail from './RecipeDetail'
 import Login from './Login'
 import Register from './Register'
 import UserProfile from './UserProfile'
+import AddNewRecipe from './AddNewRecipe'
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
       <Route path="/" element={<RecipeList />} />
       <Route path="/recipe/:id" element={<RecipeDetail />} />
       <Route path="/profile" element={<UserProfile />} />
+      <Route path="/newRecipe" element={<AddNewRecipe />} />
     </Routes>
   )
 }

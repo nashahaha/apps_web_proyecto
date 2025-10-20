@@ -3,7 +3,17 @@ import RecipeModel from "../models/recipe.js";
 import User from "../models/users.js";
 import { withUser } from "../utils/middleware.js";
 import type { Request, Response, NextFunction } from "express";
+import multer from 'multer';
+import path from "path";
 
+const storage = multer.diskStorage({
+    destination: path.join(process.cwd(), "uploads"),
+    filename: (req, file, cb) => {
+        cb(null, `${Date.now()}-${file.originalname}`);
+    },
+});
+
+const upload = multer({ storage });
 const router = express.Router();
 
 //get todas las recetas
@@ -14,24 +24,29 @@ router.get("/", async (request, response) => {
 
 //receta por ID
 router.get("/:id", async (request, response, next) => {
-  try {
-    const recipe = await RecipeModel.findById(request.params.id);
-    if (recipe) {
-      response.json(recipe);
-    } else {
-      response.status(404).end();
+    try {
+        const recipe = await RecipeModel.findById(request.params.id);
+        if (recipe) {
+            response.json(recipe);
+        } else {
+            response.status(404).end();
+        }
+    } catch (exception) {
+        next(exception);
     }
-  } catch (exception) {
-    next(exception); 
-  }
 });
 
 //crear nueva receta (requiere autenticación)
-router.post("/", withUser, async (request: Request, response: Response, next: NextFunction) => {
+router.post("/", withUser, upload.single('image'), async (request: Request, response: Response, next: NextFunction) => {
     const body = request.body;
     const userId = request.userId;
+    const imagePath = request.file ? `/uploads/${request.file.filename}` : null;
+    const ingredients = JSON.parse(body.ingredients);
 
-    if (!body.name || !body.instructions || !body.ingredients || body.ingredients.length === 0) {
+    if (!body.name || !body.instructions || !ingredients || body.ingredients.length === 0) {
+        console.log(body.name)
+        console.log(body.instructions)
+        console.log(ingredients)
         return response.status(400).json({
             error: "Recipe content missing required fields (name, instructions, or ingredients)",
         });
@@ -42,15 +57,15 @@ router.post("/", withUser, async (request: Request, response: Response, next: Ne
         category: body.category || "General",
         area: body.area,
         instructions: body.instructions,
-        image: body.image,
+        image: imagePath,
         tags: body.tags,
         youtube: body.youtube,
         source: body.source,
-        ingredients: body.ingredients,
+        ingredients: ingredients,
         author: userId,
     });
 
-    try{
+    try {
         const savedRecipe = await recipe.save();
 
         // Agregar la receta a myRecipes del usuario
@@ -125,6 +140,6 @@ router.put("/:id", withUser, async (request: Request, response: Response, next: 
     } catch (exception) {
         next(exception);
     }
-});    
+});
 
 export default router;
