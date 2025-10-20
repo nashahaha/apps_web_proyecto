@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import FavoriteButton from "./FavoriteButton";
-import type { Recipe } from "../types/Recipe"; // 👈 importamos el tipo
+import type { Recipe } from "../types/Recipe"; // importamos el tipo
 
 const getData = async (id: string): Promise<Recipe> => {
   const res = await fetch(`http://localhost:3001/recipes/${id}`);
@@ -13,7 +13,7 @@ const getData = async (id: string): Promise<Recipe> => {
 
 const RecipeDetail = () => {
   const { id } = useParams<{ id: string }>();
-  const [recipe, setRecipe] = useState<Recipe | null>(null); 
+  const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [fav, setFav] = useState(false);
 
   useEffect(() => {

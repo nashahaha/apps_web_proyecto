@@ -86,7 +86,7 @@ function NewRecipeForm() {
                 <div className="flex flex-col gap-3">
                     {ingredients.map((ing, index) => (
                         <div key={index} className="join flex gap-2 items-center">
-                            {/* 1️⃣ Cantidad */}
+                            {/* Cantidad */}
                             <div className="flex items-center gap-2">
                                 <button
                                     className="btn btn-circle"
@@ -117,7 +117,7 @@ function NewRecipeForm() {
                                 </button>
                             </div>
 
-                            {/* 2️⃣ Unidad */}
+                            {/* Unidad */}
                             <select
                                 className="select select-bordered w-24"
                                 value={ing.unit}
@@ -130,7 +130,7 @@ function NewRecipeForm() {
                                 ))}
                             </select>
 
-                            {/* 3️⃣ Nombre del ingrediente */}
+                            {/* Nombre del ingrediente */}
                             <div className="flex flex-col">
                                 <input
                                     list="ingredients-list"
