@@ -22,6 +22,11 @@ const RecipeDetail = () => {
     }
   }, [id]);
 
+  const imageUrl = recipe?.image.startsWith("/uploads/")
+    ? `http://localhost:3001${recipe.image}`
+    : recipe?.image;
+
+
   return (
     <div>
       <Navbar />
@@ -46,7 +51,7 @@ const RecipeDetail = () => {
             <div className="card card-side justify-center items-start">
               <figure>
                 <img
-                  src={`http://localhost:3001${recipe.image}`}
+                  src={imageUrl}
                   alt={recipe.name}
                   style={{ maxWidth: "500px", width: "auto" }}
                 />

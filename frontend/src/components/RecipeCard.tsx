@@ -8,12 +8,17 @@ interface RecipeCardProps {
 }
 const RecipeCard = ({ recipe }: RecipeCardProps) => {
   const { id, name, category, image } = recipe;
+  const imageUrl = image.startsWith("/uploads/")
+    ? `http://localhost:3001${recipe.image}`
+    : recipe?.image;
+
+
   return (
     <div className="card bg-base-100 w-80 h-[390px] shadow-xl overflow-hidden">
       {/* Imagen con overlays */}
       <div className="relative w-full aspect-[4/3]">
         <img
-          src={`http://localhost:3001${image}`}
+          src={imageUrl}
           alt={name}
           className="w-full h-full object-cover"
         />
