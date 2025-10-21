@@ -43,19 +43,24 @@ const RecipeDetail = () => {
               <h1 className="text-2xl font-bold text-center flex-1">
                 {recipe.name}
               </h1>
-
-              {/* Favorite button */}
-              {id && <FavoriteToggle recipeId={id} size={28} />}
             </div>
 
             <div className="card card-side justify-center items-start">
-              <figure>
+              {/* 👇 contenedor RELATIVE que “encierra” la imagen */}
+              <div className="relative inline-block max-w-[500px] overflow-hidden rounded-xl">
                 <img
                   src={imageUrl}
                   alt={recipe.name}
-                  style={{ maxWidth: "500px", width: "auto" }}
+                  className="block w-full h-auto object-cover"
                 />
-              </figure>
+
+                {/* ⭐ ahora sí queda en la esquina de la FOTO */}
+                {id && (
+                  <div className="absolute top-2 right-2">
+                    <FavoriteToggle recipeId={id} size={28} />
+                  </div>
+                )}
+              </div>
               <div className="card-body max-w-xl">
                 <p className="mt-4">Category: {recipe.category}</p>
 
