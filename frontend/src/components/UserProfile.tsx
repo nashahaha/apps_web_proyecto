@@ -12,8 +12,8 @@ const UserProfile = () => {
     if (!user) {
         return (
             <div className="max-w-md mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
-                <h2 className="text-xl font-semibold text-gray-800 mb-4">Perfil de Usuario</h2>
-                <p className="text-gray-600">No hay usuario autenticado</p>
+                <h2 className="text-xl font-semibold text-gray-800 mb-4">User Profile</h2>
+                <p className="text-gray-600">No authenticated user</p>
             </div>
         );
     }
@@ -50,18 +50,18 @@ const UserProfile = () => {
                         <div className="bg-white shadow rounded-lg">
                             <div className="px-6 py-4 border-b border-gray-200">
                                 <div className="flex items-center justify-between">
-                                    <h2 className="text-lg font-medium text-gray-900">Mis Recetas</h2>
+                                    <h2 className="text-lg font-medium text-gray-900">My Recipes</h2>
                                 </div>
                             </div>
                             <div className="px-6 py-8">
                                 <div className="text-center py-12">
-                                    <h3 className="mt-2 text-sm font-medium text-gray-900">No tienes recetas creadas</h3>
+                                    <h3 className="mt-2 text-sm font-medium text-gray-900">You haven't created any recipes yet</h3>
                                     <p className="mt-1 text-sm text-gray-500">
-                                        Crea tu primera receta!
+                                        Create your First!
                                     </p>
                                     <div className="mt-6">
                                         <button type="button" onClick={() => navigate("/newRecipe")} className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-orange-700 bg-orange-100 hover:bg-orange-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors">
-                                            ➕ Crear receta
+                                            ➕ 
                                         </button>
                                     </div>
                                 </div>
@@ -72,7 +72,7 @@ const UserProfile = () => {
                         <div className="bg-white shadow rounded-lg">
                             <div className="px-6 py-4 border-b border-gray-200">
                                 <div className="flex items-center justify-between">
-                                    <h2 className="text-lg font-medium text-gray-900">Recetas Favoritas</h2>
+                                    <h2 className="text-lg font-medium text-gray-900">Favorite Recipes</h2>
                                 </div>
                             </div>
                             <div className="px-6 py-8">

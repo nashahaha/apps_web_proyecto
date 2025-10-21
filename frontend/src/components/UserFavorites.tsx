@@ -21,16 +21,16 @@ useEffect(() => {
     fetchFavorites();
 }, []);
 
-if (loading) return <p className="text-center text-gray-500">Cargando...</p>;
+if (loading) return <p className="text-center text-gray-500">Loading...</p>;
 
 if (favorites.length === 0) {
     return (
     <div className="text-center py-12">
         <div className="mx-auto h-12 w-12 text-gray-400 mb-4">❤️</div>
         <h3 className="text-sm font-medium text-gray-900">
-        No tienes recetas favoritas
+        You don’t have any favorites yet...
         </h3>
-        <p className="text-sm text-gray-500">Explora recetas y márcalas como favoritas.</p>
+        <p className="text-sm text-gray-500">Explore recipes and mark them as your favorites.</p>
     </div>
     );
 }
