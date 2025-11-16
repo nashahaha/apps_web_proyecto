@@ -1,8 +1,10 @@
-import { useAuth } from '../context/AuthContext';
+import { useAuthStore } from '../stores/authStore';
 import { Link, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
-  const { user, isAuthenticated, logout } = useAuth();
+  const user = useAuthStore(state => state.user);
+  const isAuthenticated = useAuthStore(state => state.isAuthenticated);
+  const logout = useAuthStore(state => state.logout);
   const navigate = useNavigate();
 
   const handleLogout = async () => {

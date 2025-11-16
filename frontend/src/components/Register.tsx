@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuthStore } from '../stores/authStore';
 import Navbar from './Navbar';
 import Footer from './Footer';
 
@@ -12,7 +12,7 @@ const Register = () => {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-    const { register } = useAuth();
+    const register = useAuthStore(state => state.register);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -32,7 +32,7 @@ const Register = () => {
         setLoading(true);
 
         try {
-            await register({ name, email, password });
+            await register(name, email, password);
             navigate('/');
         } catch (error: any) {
             if (error.response?.status === 409) {

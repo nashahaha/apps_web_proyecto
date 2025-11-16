@@ -1,34 +1,28 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import userService from "../services/userService";
-import type { Recipe } from "../types/Recipe";
+import { useRecipesStore } from "../stores/recipeStores";
+import { useAuthStore } from "../stores/authStore";
 
 const UserFavorites = () => {
-const [favorites, setFavorites] = useState<Recipe[]>([]);
-const [loading, setLoading] = useState(true);
+const favoriteRecipes = useRecipesStore(state => state.favoriteRecipes);
+const fetchFavorites = useRecipesStore(state => state.fetchFavorites);
+const isAuthenticated = useAuthStore(state => state.isAuthenticated);
+const loading = useRecipesStore(state => state.loading);
 
 useEffect(() => {
-    const fetchFavorites = async () => {
-    try {
-        const data = await userService.getFavoriteRecipes();
-        setFavorites(data);
-    } catch (error) {
-        console.error("Error fetching favorites:", error);
-    } finally {
-        setLoading(false);
+    if (isAuthenticated) {
+        fetchFavorites();
     }
-    };
-    fetchFavorites();
-}, []);
+}, [isAuthenticated, fetchFavorites]);
 
 if (loading) return <p className="text-center text-gray-500">Loading...</p>;
 
-if (favorites.length === 0) {
+if (favoriteRecipes.length === 0) {
     return (
     <div className="text-center py-12">
         <div className="mx-auto h-12 w-12 text-gray-400 mb-4">❤️</div>
         <h3 className="text-sm font-medium text-gray-900">
-        You don’t have any favorites yet...
+        You don't have any favorites yet...
         </h3>
         <p className="text-sm text-gray-500">Explore recipes and mark them as your favorites.</p>
     </div>
@@ -37,7 +31,7 @@ if (favorites.length === 0) {
 
 return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {favorites.map((recipe) => (
+        {favoriteRecipes.map((recipe) => (
             <div key={recipe.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
                 <div className="relative h-48 w-full">
                 <img src={recipe.image} alt={recipe.name} className="w-full h-full object-cover"/>

@@ -1,31 +1,36 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
+import { useRecipesStore } from "../stores/recipeStores";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import FavoriteToggle from "./FavoriteToggle";
-import type { Recipe } from "../types/Recipe"; // importamos el tipo
-
-const getData = async (id: string): Promise<Recipe> => {
-  const res = await fetch(`http://localhost:3001/api/recipes/${id}`);
-  return res.json() as Promise<Recipe>;
-  // Falta manejar los códigos de error si quieres robustez
-};
 
 const RecipeDetail = () => {
   const { id } = useParams<{ id: string }>();
-  const [recipe, setRecipe] = useState<Recipe | null>(null);
-  const [fav, setFav] = useState(false);
+  const recipe = useRecipesStore(state => state.selectedRecipe);
+  const selectRecipe = useRecipesStore(state => state.selectRecipe);
+  const loading = useRecipesStore(state => state.loading);
 
   useEffect(() => {
     if (id) {
-      getData(id).then((data) => setRecipe(data));
+      selectRecipe(id);
     }
-  }, [id]);
+  }, [id, selectRecipe]);
 
   const imageUrl = recipe?.image.startsWith("/uploads/")
     ? `http://localhost:3001${recipe.image}`
     : recipe?.image;
 
+  if (loading) {
+    return (
+      <div>
+        <Navbar />
+        <div className="flex justify-center items-center min-h-screen">
+          <span className="loading loading-spinner loading-lg"></span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
