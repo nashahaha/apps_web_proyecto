@@ -36,7 +36,7 @@ app.use("/api/recipes", recipeRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/users", usersRouter);
 
-if (process.env.NODE_ENV === "test") {
+if (process.env.NODE_ENV === "test" || process.env.NODE_ENV === "development") {
   app.use("/api/testing", testingRouter);
 }
 

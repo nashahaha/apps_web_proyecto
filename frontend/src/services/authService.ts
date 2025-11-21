@@ -20,10 +20,13 @@ const register = async (credentials: registerCredentials) => {
 const login = async (credentials: Credentials) => {
     const response = await axios.post('/api/auth/login', credentials);
 
-    const csrfToken = response.headers['x-csrf-token'];
+    const csrfToken = response.headers['x-csrf-token'] || response.headers['X-CSRF-Token'];
 
     if (csrfToken) {
         localStorage.setItem('csrfToken', csrfToken);
+        console.log('CSRF Token saved:', csrfToken);
+    } else {
+        console.log('No CSRF token received in response headers');
     }
 
     return response.data;
