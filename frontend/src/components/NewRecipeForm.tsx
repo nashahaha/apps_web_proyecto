@@ -31,9 +31,9 @@ function NewRecipeForm() {
     };
 
     // Función para actualizar un campo de un ingrediente
-    const updateIngredient = (index: number, field: keyof Ingredient, value: any) => {
+    const updateIngredient = (index: number, field: keyof Ingredient, value: string | number) => {
         const updated = [...ingredients];
-        updated[index][field] = value;
+        (updated[index][field] as string | number) = value;
         setIngredients(updated);
 
         // Si se completa el último campo (cantidad > 0 y name no vacío), agrega uno nuevo
@@ -85,7 +85,7 @@ function NewRecipeForm() {
         const csrfToken = localStorage.getItem("csrfToken") || "";
 
         try {
-            // Enviar a la API
+            // Enviar a la API usando fetch (debido a FormData con archivo)
             const response = await fetch("/api/recipes", {
                 method: 'POST',
                 body: formData,
@@ -99,6 +99,9 @@ function NewRecipeForm() {
 
             const data = await response.json();
             console.log("Receta guardada:", data);
+            
+            // Recargar las recetas después de crear una nueva
+            // El store se actualizará automáticamente cuando volvamos a la lista
             navigate("/profile")
         } catch (error) {
             console.error(error);

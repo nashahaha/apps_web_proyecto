@@ -1,12 +1,11 @@
-
-import { useAuth } from '../context/AuthContext';
 import Footer from './Footer';
 import Navbar from './Navbar';
 import UserFavorites from './UserFavorites';
 import { useNavigate } from "react-router-dom";
+import { useAuthStore } from '../stores/authStore';
 
 const UserProfile = () => {
-    const { user } = useAuth();
+    const user = useAuthStore(state => state.user);
     const navigate = useNavigate();
 
     if (!user) {

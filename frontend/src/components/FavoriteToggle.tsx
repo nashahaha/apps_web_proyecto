@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
-import userService from "../services/userService";
+import { useEffect } from "react";
+import { useAuthStore } from "../stores/authStore";
+import { useRecipesStore } from "../stores/recipeStores";
 import FavoriteButton from "./FavoriteButton";
 
 interface FavoriteToggleProps {
@@ -9,40 +10,45 @@ interface FavoriteToggleProps {
 }
 
 const FavoriteToggle = ({ recipeId, size = 24, stopPropagation }: FavoriteToggleProps) => {
-    const [fav, setFav] = useState(false);
-    const [loading, setLoading] = useState(false);
+    const isAuthenticated = useAuthStore(state => state.isAuthenticated);
+    const favoriteRecipes = useRecipesStore(state => state.favoriteRecipes);
+    const addToFavorites = useRecipesStore(state => state.addToFavorites);
+    const removeFromFavorites = useRecipesStore(state => state.removeFromFavorites);
+    const fetchFavorites = useRecipesStore(state => state.fetchFavorites);
 
+    // Verificar si la receta está en favoritos
+    const isFavorite = favoriteRecipes.some((r) => r.id === recipeId);
+
+    // Cargar favoritos solo si está autenticado
     useEffect(() => {
-    const checkFavorite = async () => {
-        try {
-            const favorites = await userService.getFavoriteRecipes();
-            const isFav = favorites.some((r) => r.id === recipeId);
-            setFav(isFav);
-        } catch (err) {
-            console.error("Error verificando favoritos:", err);
+        if (isAuthenticated) {
+            fetchFavorites();
         }
-    };
-    checkFavorite();
-    }, [recipeId]);
+    }, [isAuthenticated, fetchFavorites]);
 
     const handleToggle = async () => {
-    try {
-        setLoading(true);
-        if (fav) {
-            await userService.removeFromFavorites(recipeId);
-            setFav(false);
-        } else {
-            await userService.addToFavorites(recipeId);
-            setFav(true);
+        if (!isAuthenticated) {
+            // Opcional: mostrar mensaje o redirigir a login
+            return;
         }
-    } catch (err) {
-        console.error("Error actualizando favoritos:", err);
-    } finally {
-        setLoading(false);
-    }
+
+        try {
+            if (isFavorite) {
+                await removeFromFavorites(recipeId);
+            } else {
+                await addToFavorites(recipeId);
+            }
+        } catch (err) {
+            console.error("Error actualizando favoritos:", err);
+        }
     };
 
-    return ( <FavoriteButton active={fav} onToggle={handleToggle} stopPropagation={stopPropagation} size={size} />);
+    // No mostrar el botón si no está autenticado
+    if (!isAuthenticated) {
+        return null;
+    }
+
+    return ( <FavoriteButton active={isFavorite} onToggle={handleToggle} stopPropagation={stopPropagation} size={size} />);
 };
 
 export default FavoriteToggle;
