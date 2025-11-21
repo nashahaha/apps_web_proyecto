@@ -9,6 +9,7 @@ import middleware from "./utils/middleware.js";
 import authRouter from "./controllers/auth.js";
 import usersRouter from "./controllers/users.js";
 import path from "path";
+import testingRouter from "./controllers/testing.js";
 
 const app = express();
 
@@ -35,6 +36,9 @@ app.use("/api/recipes", recipeRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/users", usersRouter);
 
+if (process.env.NODE_ENV === "test") {
+  app.use("/api/testing", testingRouter);
+}
 
 app.use(middleware.requestLogger);
 app.use(middleware.unknownEndpoint);
