@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import axios from 'axios';
+import axiosSecure from '../utils/axiosSecure';
 
 interface Recipe {
   id: string;
@@ -48,7 +49,7 @@ export const useRecipesStore = create<RecipesState>((set, get) => ({
   
   fetchMyRecipes: async () => {
     try {
-      const { data } = await axios.get('/api/users/recipes');
+      const { data } = await axiosSecure.get('/api/users/recipes');
       set({ myRecipes: data });
     } catch (error) {
       // Silenciar error 401 cuando no hay sesión
@@ -61,7 +62,7 @@ export const useRecipesStore = create<RecipesState>((set, get) => ({
   
   fetchFavorites: async () => {
     try {
-      const { data } = await axios.get('/api/users/favorites');
+      const { data } = await axiosSecure.get('/api/users/favorites');
       set({ favoriteRecipes: data });
     } catch (error) {
       // Silenciar error 401 cuando no hay sesión
@@ -98,7 +99,7 @@ export const useRecipesStore = create<RecipesState>((set, get) => ({
   
   deleteRecipe: async (id) => {
     try {
-      await axios.delete(`/api/recipes/${id}`);
+      await axiosSecure.delete(`/api/recipes/${id}`);
       set((state) => ({
         recipes: state.recipes.filter(r => r.id !== id),
         myRecipes: state.myRecipes.filter(r => r.id !== id)
@@ -111,7 +112,7 @@ export const useRecipesStore = create<RecipesState>((set, get) => ({
   
   addToFavorites: async (recipeId) => {
     try {
-      await axios.post(`/api/users/favorites/${recipeId}`);
+      await axiosSecure.post(`/api/users/favorites/${recipeId}`);
       const recipe = get().recipes.find(r => r.id === recipeId);
       if (recipe) {
         set((state) => ({ 
@@ -126,7 +127,7 @@ export const useRecipesStore = create<RecipesState>((set, get) => ({
   
   removeFromFavorites: async (recipeId) => {
     try {
-      await axios.delete(`/api/users/favorites/${recipeId}`);
+      await axiosSecure.delete(`/api/users/favorites/${recipeId}`);
       set((state) => ({
         favoriteRecipes: state.favoriteRecipes.filter(r => r.id !== recipeId)
       }));
