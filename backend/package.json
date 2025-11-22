@@ -9,7 +9,8 @@
     "populate-db": "tsx scripts/populate-db.ts",
     "clear-db": "tsx scripts/clear-db.ts",
     "clear-users": "tsx scripts/clear-users.ts",
-    "test": "cross-env NODE_ENV=test tsx --test tests/**/*.test.ts"
+    "test": "cross-env NODE_ENV=test tsx --test tests/**/*.test.ts",
+    "start:test": "cross-env NODE_ENV=test tsx src/index.ts"
   },
   "keywords": [],
   "author": "",
