@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import axios from 'axios';
+import axiosSecure from '../utils/axiosSecure';
 
 interface Recipe {
   id: string;
@@ -23,6 +24,7 @@ interface RecipesState {
   fetchFavorites: () => Promise<void>;
   selectRecipe: (id: string) => Promise<void>;
   createRecipe: (recipe: Partial<Recipe>) => Promise<void>;
+  addCreatedRecipe: (recipe: Recipe) => void;
   deleteRecipe: (id: string) => Promise<void>;
   addToFavorites: (recipeId: string) => Promise<void>;
   removeFromFavorites: (recipeId: string) => Promise<void>;
@@ -38,7 +40,7 @@ export const useRecipesStore = create<RecipesState>((set, get) => ({
   fetchRecipes: async () => {
     set({ loading: true });
     try {
-      const { data } = await axios.get('/api/recipes');
+      const { data } = await axiosSecure.get('/api/recipes');
       set({ recipes: data, loading: false });
     } catch (error) {
       console.error('Error fetching recipes:', error);
@@ -48,7 +50,7 @@ export const useRecipesStore = create<RecipesState>((set, get) => ({
   
   fetchMyRecipes: async () => {
     try {
-      const { data } = await axios.get('/api/users/recipes');
+      const { data } = await axiosSecure.get('/api/users/recipes');
       set({ myRecipes: data });
     } catch (error) {
       // Silenciar error 401 cuando no hay sesión
@@ -61,7 +63,7 @@ export const useRecipesStore = create<RecipesState>((set, get) => ({
   
   fetchFavorites: async () => {
     try {
-      const { data } = await axios.get('/api/users/favorites');
+      const { data } = await axiosSecure.get('/api/users/favorites');
       set({ favoriteRecipes: data });
     } catch (error) {
       // Silenciar error 401 cuando no hay sesión
@@ -75,7 +77,7 @@ export const useRecipesStore = create<RecipesState>((set, get) => ({
   selectRecipe: async (id) => {
     set({ loading: true });
     try {
-      const { data } = await axios.get(`/api/recipes/${id}`);
+      const { data } = await axiosSecure.get(`/api/recipes/${id}`);
       set({ selectedRecipe: data, loading: false });
     } catch (error) {
       console.error('Error fetching recipe:', error);
@@ -85,7 +87,7 @@ export const useRecipesStore = create<RecipesState>((set, get) => ({
   
   createRecipe: async (recipe) => {
     try {
-      const { data } = await axios.post('/api/recipes', recipe);
+      const { data } = await axiosSecure.post('/api/recipes', recipe);
       set((state) => ({ 
         recipes: [...state.recipes, data],
         myRecipes: [...state.myRecipes, data]
@@ -96,9 +98,16 @@ export const useRecipesStore = create<RecipesState>((set, get) => ({
     }
   },
   
+  addCreatedRecipe: (recipe) => {
+    set((state) => ({ 
+      recipes: [...state.recipes, recipe],
+      myRecipes: [...state.myRecipes, recipe]
+    }));
+  },
+  
   deleteRecipe: async (id) => {
     try {
-      await axios.delete(`/api/recipes/${id}`);
+      await axiosSecure.delete(`/api/recipes/${id}`);
       set((state) => ({
         recipes: state.recipes.filter(r => r.id !== id),
         myRecipes: state.myRecipes.filter(r => r.id !== id)
@@ -111,7 +120,7 @@ export const useRecipesStore = create<RecipesState>((set, get) => ({
   
   addToFavorites: async (recipeId) => {
     try {
-      await axios.post(`/api/users/favorites/${recipeId}`);
+      await axiosSecure.post(`/api/users/favorites/${recipeId}`);
       const recipe = get().recipes.find(r => r.id === recipeId);
       if (recipe) {
         set((state) => ({ 
@@ -123,10 +132,10 @@ export const useRecipesStore = create<RecipesState>((set, get) => ({
       throw error;
     }
   },
-  
+
   removeFromFavorites: async (recipeId) => {
     try {
-      await axios.delete(`/api/users/favorites/${recipeId}`);
+      await axiosSecure.delete(`/api/users/favorites/${recipeId}`);
       set((state) => ({
         favoriteRecipes: state.favoriteRecipes.filter(r => r.id !== recipeId)
       }));
