@@ -62,6 +62,15 @@ const UserProfile = () => {
                                 <div className="flex items-center justify-between">
                                     <h2 className="text-lg font-medium text-gray-900">My Recipes</h2>
                                 </div>
+                                <div className="mt-2">
+                                    <button 
+                                        type="button" 
+                                        onClick={() => navigate("/newRecipe")} 
+                                        className="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-orange-700 bg-orange-100 hover:bg-orange-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors"
+                                    >
+                                        ➕ Add Recipe
+                                    </button>
+                                </div>
                             </div>
                             <div className="px-6 py-8">
                                 {loading ? (
