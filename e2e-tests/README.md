@@ -37,7 +37,6 @@ npm test
 #### `crud.spec.ts`
 **Funcionalidad**: Operaciones CRUD (Create, Read, Update, Delete) de recetas
 - **Create**: Creación de nuevas recetas con imagen, ingredientes e instrucciones
-- **Read**: Visualización y búsqueda de recetas
 
 #### `favs.spec.ts`
 **Funcionalidad**: Verificación de favoritos de recetas 
