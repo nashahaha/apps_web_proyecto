@@ -1,8 +1,6 @@
-import Navbar from '../components/Navbar';
 import RecipeList from '../components/RecipeList'
-import Footer from "../components/Footer"
 import SearchBar from '../components/SearchBar';
-import Layout from 'components/Layout';
+import Layout from '../components/Layout';
 
 function RecipesExplorer() {
 
