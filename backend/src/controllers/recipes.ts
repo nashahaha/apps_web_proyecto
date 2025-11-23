@@ -41,14 +41,31 @@ router.post("/", withUser, upload.single('image'), async (request: Request, resp
     const body = request.body;
     const userId = request.userId;
     const imagePath = request.file ? `/uploads/${request.file.filename}` : null;
-    const ingredients = JSON.parse(body.ingredients);
-
-    if (!body.name || !body.instructions || !ingredients || body.ingredients.length === 0) {
-        console.log(body.name)
-        console.log(body.instructions)
-        console.log(ingredients)
+    // Validar y parsear ingredientes de forma segura
+    let ingredients;
+    try {
+        if (typeof body.ingredients === 'string') {
+            ingredients = JSON.parse(body.ingredients);
+        } else if (Array.isArray(body.ingredients)) {
+            ingredients = body.ingredients;
+        } else {
+            throw new Error('Invalid ingredients format');
+        }
+    } catch (error) {
+        console.error('Error parsing ingredients:', error);
+        console.log('Raw ingredients:', body.ingredients);
         return response.status(400).json({
-            error: "Recipe content missing required fields (name, instructions, or ingredients)",
+            error: "Invalid ingredients format",
+        });
+    }
+
+    if (!body.name || !body.instructions || !ingredients || ingredients.length === 0 || !imagePath) {
+        console.log('name:', body.name)
+        console.log('instructions:', body.instructions)
+        console.log('ingredients:', ingredients)
+        console.log('imagePath:', imagePath)
+        return response.status(400).json({
+            error: "Recipe content missing required fields (name, instructions, ingredients, or image)",
         });
     }
 

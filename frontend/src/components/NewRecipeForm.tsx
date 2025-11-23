@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axiosSecure from "../utils/axiosSecure";
+import { useRecipesStore } from "../stores/recipeStores";
 
 function NewRecipeForm() {
     const navigate = useNavigate();
+    const addCreatedRecipe = useRecipesStore(state => state.addCreatedRecipe);
     const unit = ["unit", "ml", "g", "tsp", "tbsp", "cup"];
     const allIngredients = ["Eggplant", "Tomato", "Onion", "Garlic", "Olive Oil"];
     const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -68,12 +71,17 @@ function NewRecipeForm() {
 
         const ingredientsForDB = validIngredients.map((ing) => ({
             ingredient: ing.name,
-            measure: `${ing.amount} - ${ing.unit}`,
+            measure: `${ing.amount} ${ing.unit}`,
         }));
 
-        if (!imageFile || !recipeName || !instructions || !ingredients) {
-            console.log("Faltan datos")
-            return
+        if (!imageFile || !recipeName || !instructions || validIngredients.length === 0) {
+            console.log("Faltan datos:");
+            console.log("imageFile:", !!imageFile);
+            console.log("recipeName:", recipeName);
+            console.log("instructions:", instructions);
+            console.log("validIngredients:", validIngredients.length);
+            alert("Por favor completa todos los campos requeridos");
+            return;
         }
 
         const formData = new FormData(); // form data para enviar imagenes
@@ -82,29 +90,24 @@ function NewRecipeForm() {
         formData.append("ingredients", JSON.stringify(ingredientsForDB));
         formData.append("image", imageFile);
 
-        const csrfToken = localStorage.getItem("csrfToken") || "";
-
         try {
-            // Enviar a la API usando fetch (debido a FormData con archivo)
-            const response = await fetch("/api/recipes", {
-                method: 'POST',
-                body: formData,
-                credentials: "include",
+            // Usar axiosSecure para el FormData
+            const response = await axiosSecure.post("/api/recipes", formData, {
                 headers: {
-                    "x-csrf-token": csrfToken,
+                    'Content-Type': 'multipart/form-data',
                 },
             });
 
-            if (!response.ok) throw new Error("Error al subir la receta");
+            console.log("Receta guardada:", response.data);
 
-            const data = await response.json();
-            console.log("Receta guardada:", data);
-
-            // Recargar las recetas después de crear una nueva
-            // El store se actualizará automáticamente cuando volvamos a la lista
-            navigate("/profile")
+            // Actualizar el store con la nueva receta
+            addCreatedRecipe(response.data);
+            //navegar a la página principal
+            navigate("/");
         } catch (error) {
-            console.error(error);
+            console.error("Error creating recipe:", error);
+            // Mostrar mensaje de error al usuario
+            alert("Error al crear la receta. Por favor intenta de nuevo.");
         }
     };
 
