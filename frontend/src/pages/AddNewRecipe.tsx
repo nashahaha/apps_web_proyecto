@@ -1,6 +1,6 @@
-import Footer from "./Footer"
-import Navbar from "./Navbar"
-import NewRecipeForm from "./NewRecipeForm"
+import Footer from "../components/Footer"
+import Navbar from "../components/Navbar"
+import NewRecipeForm from "../components/NewRecipeForm"
 
 const AddNewRecipe = () => {
     return (

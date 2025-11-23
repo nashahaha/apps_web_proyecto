@@ -1,6 +1,6 @@
-import Footer from './Footer';
-import Navbar from './Navbar';
-import UserFavorites from './UserFavorites';
+import Footer from '../components/Footer';
+import Navbar from '../components/Navbar';
+import UserFavorites from '../components/UserFavorites';
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from '../stores/authStore';
 
@@ -60,7 +60,7 @@ const UserProfile = () => {
                                     </p>
                                     <div className="mt-6">
                                         <button type="button" onClick={() => navigate("/newRecipe")} className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-orange-700 bg-orange-100 hover:bg-orange-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors">
-                                            ➕ 
+                                            ➕
                                         </button>
                                     </div>
                                 </div>

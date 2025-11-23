@@ -1,10 +1,10 @@
 import { Routes, Route } from 'react-router-dom'
-import RecipeList from './RecipeList'
-import RecipeDetail from './RecipeDetail'
-import Login from './Login'
-import Register from './Register'
-import UserProfile from './UserProfile'
-import AddNewRecipe from './AddNewRecipe'
+import RecipeList from './components/RecipeList'
+import RecipeDetail from './components/RecipeDetail'
+import Login from './pages/Login'
+import Register from './pages/Register'
+import UserProfile from './pages/UserProfile'
+import AddNewRecipe from './pages/AddNewRecipe'
 
 function App() {
 

@@ -1,30 +1,44 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuthStore } from '../stores/authStore';
-import Navbar from './Navbar';
-import Footer from './Footer';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
-const Login = () => {
+const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [name, setName] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-    const login = useAuthStore(state => state.login);
+    const register = useAuthStore(state => state.register);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
+
+        // Validaciones
+        if (password.length < 6) {
+            setError('Password must be at least 6 characters');
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            setError('Passwords do not match');
+            return;
+        }
+
         setLoading(true);
 
         try {
-            await login(email, password);
+            await register(name, email, password);
             navigate('/');
         } catch (error: any) {
-            if (error.response?.status === 401) {
-                setError('Invalid email or password');
+            if (error.response?.status === 409) {
+                setError('This email is already registered. Please login instead.');
             } else {
-                setError(error.response?.data?.error || 'Login failed. Please try again.');
+                setError(error.response?.data?.error || 'Registration failed. Please try again.');
             }
         } finally {
             setLoading(false);
@@ -38,7 +52,7 @@ const Login = () => {
                 <div className="card w-full max-w-md bg-base-100 shadow-xl">
                     <div className="card-body">
                         <h2 className="card-title text-3xl font-bold text-center justify-center mb-6">
-                            Welcome Back
+                            Create Account
                         </h2>
 
                         {error && (
@@ -51,6 +65,20 @@ const Login = () => {
                         )}
 
                         <form onSubmit={handleSubmit} className="space-y-4">
+                            <div className="form-control">
+                                <label className="label">
+                                    <span className="label-text">Name</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    placeholder="Enter your name"
+                                    className="input input-bordered w-full"
+                                    required
+                                />
+                            </div>
+
                             <div className="form-control">
                                 <label className="label">
                                     <span className="label-text">Email</span>
@@ -76,6 +104,22 @@ const Login = () => {
                                     placeholder="Enter your password"
                                     className="input input-bordered w-full"
                                     required
+                                    minLength={6}
+                                />
+                            </div>
+
+                            <div className="form-control">
+                                <label className="label">
+                                    <span className="label-text">Confirm Password</span>
+                                </label>
+                                <input
+                                    type="password"
+                                    value={confirmPassword}
+                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                    placeholder="Confirm your password"
+                                    className="input input-bordered w-full"
+                                    required
+                                    minLength={6}
                                 />
                             </div>
 
@@ -85,7 +129,7 @@ const Login = () => {
                                     className={`btn bg-orange-500 hover:bg-orange-600 text-white border-orange-500 hover:border-orange-600 w-full ${loading ? 'loading' : ''}`}
                                     disabled={loading}
                                 >
-                                    {loading ? 'Logging in...' : 'Login'}
+                                    {loading ? 'Creating account...' : 'Register'}
                                 </button>
                             </div>
                         </form>
@@ -94,9 +138,9 @@ const Login = () => {
 
                         <div className="text-center">
                             <p className="text-sm">
-                                Don't have an account?{' '}
-                                <Link to="/register" className="link link-primary font-semibold">
-                                    Create a new account
+                                Already have an account?{' '}
+                                <Link to="/login" className="link link-primary font-semibold">
+                                    Login here
                                 </Link>
                             </p>
                         </div>
@@ -108,4 +152,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default Register;

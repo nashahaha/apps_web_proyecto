@@ -16,7 +16,7 @@ const Navbar = () => {
     }
   };
 
-  // estilo unificado tipo "link link-hover" — el que tenían Home y Recipes originalmente
+
   const navLink =
     'link link-hover text-slate-800 hover:text-orange-600 transition-colors duration-150';
 
@@ -48,20 +48,6 @@ const Navbar = () => {
               <Link to="/" className={navLink}>Home</Link>
             </li>
 
-            <li>
-              <details>
-                <summary className={`${navLink} cursor-pointer`}>
-                  Recipes
-                </summary>
-                <ul className="bg-base-100 rounded-t-none p-2 shadow">
-                  <li><a className={navLink}>Vegan</a></li>
-                  <li><a className={navLink}>Vegetarian</a></li>
-                  <li><a className={navLink}>No gluten</a></li>
-                  <li><a className={navLink}>High Protein</a></li>
-                </ul>
-              </details>
-            </li>
-
             {isAuthenticated ? (
               <li>
                 <details>
@@ -70,7 +56,7 @@ const Navbar = () => {
                   </summary>
                   <ul className="bg-base-100 rounded-t-none p-2 shadow">
                     <li><Link to="/profile" className={navLink}>Ver Perfil</Link></li>
-                    <li><a className={navLink}>My Recipes</a></li>
+                    <li><Link to="/newRecipe" className={navLink}>Add New Recipe</Link></li>
                     <li>
                       <button onClick={handleLogout} className={`${navLink} !text-rose-500 hover:!text-rose-600 font-medium`}>
                         Logout

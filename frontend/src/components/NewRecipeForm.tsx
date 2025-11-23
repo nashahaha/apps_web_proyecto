@@ -99,7 +99,7 @@ function NewRecipeForm() {
 
             const data = await response.json();
             console.log("Receta guardada:", data);
-            
+
             // Recargar las recetas después de crear una nueva
             // El store se actualizará automáticamente cuando volvamos a la lista
             navigate("/profile")
@@ -173,6 +173,7 @@ function NewRecipeForm() {
                                         }}
                                         min="0"
                                         placeholder="0"
+                                        required
                                     />
 
                                     <button
@@ -205,6 +206,7 @@ function NewRecipeForm() {
                                         placeholder="Search ingredient..."
                                         value={ing.name}
                                         onChange={(e) => updateIngredient(index, "name", e.target.value)}
+                                        required
                                     />
 
                                     <datalist id="ingredients-list">
