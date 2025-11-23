@@ -99,7 +99,7 @@ function NewRecipeForm() {
             });
 
             console.log("Receta guardada:", response.data);
-            
+
             // Actualizar el store con la nueva receta
             addCreatedRecipe(response.data);
             //navegar a la página principal
