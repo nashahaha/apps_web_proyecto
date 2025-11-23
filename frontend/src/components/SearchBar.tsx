@@ -1,42 +1,47 @@
 import { useState, useEffect } from "react";
+import { useRecipesStore } from "../stores/recipeStores";
+
 
 const SearchBar = () => {
-    const [tagsList, setTagsList] = useState<string[]>([]);
-    const [tags, setTags] = useState<string[]>([]);
+    const [tagsList, setTagsList] = useState<string[]>([]);    // lista con los tags posibles
+    //const [tags, setTags] = useState<string[]>([]);            // ingredientes seleccionados
+    const tags = useRecipesStore(state => state.tags);
+    const setTags = useRecipesStore(state => state.setTags);
+    const [filterTags, setFiltradas] = useState<string[]>([]); // ingredientes filtrados para mostrar (se muestra en lista desplegable)
     const [inputValue, setInputValue] = useState("");
-    const [filterTags, setFiltradas] = useState<string[]>([]); // ingredientes agregados
 
     useEffect(() => {
-        fetch("http://localhost:3001/api/recipes") 
-        .then((res) => res.json())
-        .then((data) => {
-            // extraer ingredientes de recetas
-            const allIngredients = Array.from(
-            new Set(
-                data.flatMap((recipe: any) =>
-                recipe.ingredients.map((i: any) => i.ingredient)
-                )
-            )
-            );
-            setTagsList(allIngredients as string[]);
-        })
-        .catch((err) => console.error("Error cargando recetas:", err));
+        fetch("http://localhost:3001/api/recipes")
+            .then((res) => res.json())
+            .then((data) => {
+                // extraer ingredientes de recetas
+                const allIngredients = Array.from(
+                    new Set(
+                        data.flatMap((recipe: any) =>
+                            recipe.ingredients.map((i: any) => i.ingredient)
+                        )
+                    )
+                );
+                setTagsList(allIngredients as string[]);
+            })
+            .catch((err) => console.error("Error cargando recetas:", err));
     }, []);
-    
+
+    // Agrega un tag a la lista de tags seleccionados
+    const addTag = (tag?: string) => {
+        const newTag = (tag ?? inputValue).trim();
+        if (newTag !== "" && !tags.includes(newTag) && tagsList.includes(newTag)) {
+            setTags([...tags, newTag])
+        }
+        setInputValue("");
+    }
+
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
             e.preventDefault();
             addTag();
         }
     };
-
-    const addTag = (tag?: string) => {
-        const newTag = (tag ?? inputValue).trim();
-        if (newTag !== "" && !tags.includes(newTag) && tagsList.includes(newTag)) {
-            setTags((prev) => [...prev, newTag]);
-        }
-        setInputValue("");
-    }
 
 
     const removeTag = (tagToRemove: string) => {
@@ -89,7 +94,7 @@ const SearchBar = () => {
 
                     {/** Input */}
                     <input type="text"
-                        placeholder="Buscar..."
+                        placeholder="Search by ingredient..."
                         value={inputValue}
                         onChange={handleChange}
                         onKeyDown={handleKeyDown}
@@ -109,10 +114,6 @@ const SearchBar = () => {
                     )}
                 </div>
             </div>
-            <div className="w-40 flex gap-1">
-                <button className="btn btn-wide rounded-full">Search Recipe</button>
-            </div>
-
 
         </div>
     )

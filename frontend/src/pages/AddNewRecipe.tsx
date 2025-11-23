@@ -1,13 +1,12 @@
-import Footer from "../components/Footer"
-import Navbar from "../components/Navbar"
+import Layout from "../components/Layout"
 import NewRecipeForm from "../components/NewRecipeForm"
 
 const AddNewRecipe = () => {
     return (
         <div>
-            <Navbar />
-            <NewRecipeForm></NewRecipeForm>
-            <Footer />
+            <Layout>
+                <NewRecipeForm></NewRecipeForm>
+            </Layout>
         </div>
     )
 }

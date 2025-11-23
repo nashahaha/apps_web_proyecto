@@ -1,9 +1,10 @@
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useRecipesStore } from "../stores/recipeStores";
-import Navbar from "./Navbar";
-import Footer from "./Footer";
-import FavoriteToggle from "./FavoriteToggle";
+import Navbar from "../components/Navbar";
+
+import FavoriteToggle from "../components/FavoriteToggle";
+import Layout from "../components/Layout";
 
 const RecipeDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -33,8 +34,8 @@ const RecipeDetail = () => {
   }
 
   return (
-    <div>
-      <Navbar />
+
+    <Layout>
       <div>
         {recipe && (
           <div className="pb-15">
@@ -51,7 +52,6 @@ const RecipeDetail = () => {
             </div>
 
             <div className="card card-side justify-center items-start">
-              {/* 👇 contenedor RELATIVE que “encierra” la imagen */}
               <div className="relative inline-block max-w-[500px] overflow-hidden rounded-xl">
                 <img
                   src={imageUrl}
@@ -59,7 +59,6 @@ const RecipeDetail = () => {
                   className="block w-full h-auto object-cover"
                 />
 
-                {/* ⭐ ahora sí queda en la esquina de la FOTO */}
                 {id && (
                   <div className="absolute top-2 right-2">
                     <FavoriteToggle recipeId={id} size={28} />
@@ -85,8 +84,8 @@ const RecipeDetail = () => {
           </div>
         )}
       </div>
-      <Footer />
-    </div>
+    </Layout>
+
   );
 };
 

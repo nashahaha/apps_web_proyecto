@@ -176,7 +176,6 @@ function NewRecipeForm() {
                                         }}
                                         min="0"
                                         placeholder="0"
-                                        required
                                     />
 
                                     <button
@@ -209,7 +208,6 @@ function NewRecipeForm() {
                                         placeholder="Search ingredient..."
                                         value={ing.name}
                                         onChange={(e) => updateIngredient(index, "name", e.target.value)}
-                                        required
                                     />
 
                                     <datalist id="ingredients-list">

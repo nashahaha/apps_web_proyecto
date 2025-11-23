@@ -18,8 +18,10 @@ interface RecipesState {
   favoriteRecipes: Recipe[];
   selectedRecipe: Recipe | null;
   loading: boolean;
+  tags: string[];
 
   fetchRecipes: () => Promise<void>;
+  setTags: (tags: string[]) => void;
   fetchMyRecipes: () => Promise<void>;
   fetchFavorites: () => Promise<void>;
   selectRecipe: (id: string) => Promise<void>;
@@ -36,6 +38,7 @@ export const useRecipesStore = create<RecipesState>((set, get) => ({
   favoriteRecipes: [],
   selectedRecipe: null,
   loading: false,
+  tags: [],
 
   fetchRecipes: async () => {
     set({ loading: true });
@@ -46,6 +49,10 @@ export const useRecipesStore = create<RecipesState>((set, get) => ({
       console.error('Error fetching recipes:', error);
       set({ loading: false });
     }
+  },
+
+  setTags: (tags) => {
+    set({ tags });
   },
 
   fetchMyRecipes: async () => {

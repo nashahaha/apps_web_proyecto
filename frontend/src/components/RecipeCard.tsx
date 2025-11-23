@@ -7,7 +7,7 @@ interface RecipeCardProps {
   variant?: "card" | "detail";
 }
 const RecipeCard = ({ recipe }: RecipeCardProps) => {
-  const { id, name, category, image } = recipe;
+  const { id, name, image } = recipe;
   const imageUrl = image.startsWith("/uploads/")
     ? `http://localhost:3001${recipe.image}`
     : recipe?.image;
@@ -16,7 +16,7 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
   return (
     <div className="card bg-base-100 w-80 h-[390px] shadow-xl overflow-hidden">
       {/* Imagen con overlays */}
-      <div className="relative w-full aspect-[4/3]">
+      <div className="relative h-70 w-full">
         <img
           src={imageUrl}
           alt={name}
@@ -28,10 +28,6 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
           <FavoriteToggle recipeId={id} stopPropagation />
         </div>
 
-        {/* Categoría: abajo-izquierda */}
-        <span className="absolute left-2 bottom-2 px-2 py-1 rounded-md bg-black/70 text-white text-xs font-medium">
-          {category}
-        </span>
       </div>
 
       <div className="card-body p-4">
