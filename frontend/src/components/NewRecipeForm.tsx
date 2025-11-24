@@ -129,6 +129,7 @@ function NewRecipeForm() {
 
                         {/* Input de imagen */}
                         <input
+                            id="recipe-image"
                             type="file"
                             className="file-input"
                             accept="image/*"

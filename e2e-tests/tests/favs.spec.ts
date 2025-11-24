@@ -23,7 +23,7 @@ test("user can add existing recipe to favorites", async ({ page, request }) => {
         .fill("Mix everything and cook.");
     await page.getByRole("button", { name: /publish recipe/i }).click();
     await page.waitForURL("/", { timeout: 10000 });
-    await page.getByPlaceholder("Buscar...").fill("My Test Recipe");
+    await page.getByPlaceholder("Search by ingredient...").fill("My Test Recipe");
     await expect(page.getByText("My Test Recipe").first()).toBeVisible();
     const recipeCard = page.getByText("My Test Recipe").first();
     await expect(recipeCard).toBeVisible();

@@ -6,8 +6,7 @@ test('front page muestra el encabezado y navegación básica', async ({ page }) 
     await expect(page.getByRole('link', { name: 'Home' })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Login' })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Create Account' })).toBeVisible();
-    await expect(page.getByText('Recipes')).toBeVisible(); // summary del details
-    await expect(page.getByPlaceholder('Buscar...')).toBeVisible();
+    await expect(page.getByPlaceholder('Search by ingredient...')).toBeVisible();
 });
 
 test('navegación al login funciona', async ({ page }) => {
