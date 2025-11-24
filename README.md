@@ -237,10 +237,6 @@ npm start
 ### Testing:
 - Playwright (E2E)
 
-### DevOps:
-- PM2 (gestión de procesos)
-- SCP (despliegue)
-
 ## Integrantes 
 
 - Martín Avendaño F.
