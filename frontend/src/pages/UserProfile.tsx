@@ -94,7 +94,7 @@ const UserProfile = () => {
                                                 <div key={recipe.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
                                                     <div className="relative h-48 w-full">
                                                         <img
-                                                            src={recipe.image.startsWith("/uploads/") ? `http://localhost:3001${recipe.image}` : recipe.image}
+                                                            src={recipe.image}
                                                             alt={recipe.name}
                                                             className="w-full h-full object-cover"
                                                         />

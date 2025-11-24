@@ -23,6 +23,8 @@ const userSchema = new mongoose.Schema<UserData>({
     ref: 'Recipe',
     default: []
   }],
+}, {
+  collection: 'nomnom_users' // Usar colección específica
 });
 
 const User = mongoose.model("User", userSchema);

@@ -9,7 +9,7 @@ interface RecipeCardProps {
 const RecipeCard = ({ recipe }: RecipeCardProps) => {
   const { id, name, image } = recipe;
   const imageUrl = image.startsWith("/uploads/")
-    ? `http://localhost:3001${recipe.image}`
+    ? recipe.image
     : recipe?.image;
 
 

@@ -18,9 +18,7 @@ const RecipeDetail = () => {
     }
   }, [id, selectRecipe]);
 
-  const imageUrl = recipe?.image.startsWith("/uploads/")
-    ? `http://localhost:3001${recipe.image}`
-    : recipe?.image;
+  const imageUrl = recipe?.image;
 
   if (loading) {
     return (

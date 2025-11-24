@@ -4,13 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "tsx src/index.ts",
+    "start": "node dist/index.js",
     "dev": "tsx --watch src/index.ts",
     "populate-db": "tsx scripts/populate-db.ts",
     "clear-db": "tsx scripts/clear-db.ts",
     "clear-users": "tsx scripts/clear-users.ts",
     "test": "cross-env NODE_ENV=test tsx --test tests/**/*.test.ts",
-    "start:test": "cross-env NODE_ENV=test tsx src/index.ts"
+    "start:test": "cross-env NODE_ENV=test tsx src/index.ts",
+    "build": "tsc",
+    "build:ui": "cd ../frontend && npm run build && rmdir /s /q ..\\backend\\dist\\public 2>nul || echo \"\" && xcopy /E /I /Y dist ..\\backend\\dist\\public"
   },
   "keywords": [],
   "author": "",

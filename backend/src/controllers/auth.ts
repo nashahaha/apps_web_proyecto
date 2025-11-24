@@ -62,7 +62,7 @@ router.post("/login", async (request, response, next) => {
     response.setHeader("X-CSRF-Token", userForToken.csrf);
     response.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: false, // Cambiar a false porque usamos HTTP en producción
       sameSite: "lax"
     });
 

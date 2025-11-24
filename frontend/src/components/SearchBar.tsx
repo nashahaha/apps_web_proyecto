@@ -11,7 +11,7 @@ const SearchBar = () => {
     const [inputValue, setInputValue] = useState("");
 
     useEffect(() => {
-        fetch("http://localhost:3001/api/recipes")
+        fetch("/api/recipes")
             .then((res) => res.json())
             .then((data) => {
                 // extraer ingredientes de recetas
