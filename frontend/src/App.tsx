@@ -5,6 +5,7 @@ import Register from './pages/Register'
 import UserProfile from './pages/UserProfile'
 import AddNewRecipe from './pages/AddNewRecipe'
 import RecipesExplorer from './pages/RecipesExplorer'
+import ProtectedRoute from './components/ProtectedRoute'
 
 function App() {
 
@@ -14,8 +15,16 @@ function App() {
       <Route path="/register" element={<Register />} />
       <Route path="/" element={<RecipesExplorer />} />
       <Route path="/recipe/:id" element={<RecipeDetail />} />
-      <Route path="/profile" element={<UserProfile />} />
-      <Route path="/newRecipe" element={<AddNewRecipe />} />
+      <Route path="/profile" element={
+        <ProtectedRoute>
+          <UserProfile />
+        </ProtectedRoute>
+      } />
+      <Route path="/newRecipe" element={
+        <ProtectedRoute>
+          <AddNewRecipe />
+        </ProtectedRoute>
+      } />
     </Routes>
   )
 }
