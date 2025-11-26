@@ -18,14 +18,14 @@ const router = express.Router();
 
 //get todas las recetas
 router.get("/", async (request, response) => {
-    const recipes = await RecipeModel.find({});
+    const recipes = await RecipeModel.find({}).populate('author', 'name email');
     response.json(recipes);
 });
 
 //receta por ID
 router.get("/:id", async (request, response, next) => {
     try {
-        const recipe = await RecipeModel.findById(request.params.id);
+        const recipe = await RecipeModel.findById(request.params.id).populate('author', 'name email');
         if (recipe) {
             response.json(recipe);
         } else {

@@ -8,6 +8,7 @@ import recipeRouter from "./controllers/recipes.js";
 import middleware from "./utils/middleware.js";
 import authRouter from "./controllers/auth.js";
 import usersRouter from "./controllers/users.js";
+import ingredientsRouter from "./controllers/ingredients.js";
 import path from "path";
 import testingRouter from "./controllers/testing.js";
 
@@ -50,6 +51,7 @@ app.use("/uploads", express.static(path.join(process.cwd(), "uploads"))); // par
 app.use("/api/recipes", recipeRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/users", usersRouter);
+app.use("/api/ingredients", ingredientsRouter);
 
 if (process.env.NODE_ENV === "test" || process.env.NODE_ENV === "development") {
   app.use("/api/testing", testingRouter);

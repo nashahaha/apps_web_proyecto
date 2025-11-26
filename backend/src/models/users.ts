@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema<UserData>({
     default: []
   }],
 }, {
-  collection: 'nomnom_users' // Usar colección específica
+  collection: 'nomnom_users' 
 });
 
 const User = mongoose.model("User", userSchema);

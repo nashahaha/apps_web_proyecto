@@ -46,7 +46,7 @@ const recipeSchema = new mongoose.Schema<Recipe>({
         ref: 'User'
     },
 }, {
-    collection: 'nomnom_recipes' // Usar colección específica
+    collection: 'nomnom_recipes' 
 });
 
 recipeSchema.set("toJSON", {

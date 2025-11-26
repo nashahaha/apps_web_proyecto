@@ -6,6 +6,7 @@ import UserProfile from './pages/UserProfile'
 import AddNewRecipe from './pages/AddNewRecipe'
 import RecipesExplorer from './pages/RecipesExplorer'
 import ProtectedRoute from './components/ProtectedRoute'
+import EditRecipeForm from './components/EditRecipeForm'
 
 function App() {
 
@@ -23,6 +24,11 @@ function App() {
       <Route path="/newRecipe" element={
         <ProtectedRoute>
           <AddNewRecipe />
+        </ProtectedRoute>
+      } />
+      <Route path="/recipe/:id/edit" element={
+        <ProtectedRoute>
+          <EditRecipeForm />
         </ProtectedRoute>
       } />
     </Routes>

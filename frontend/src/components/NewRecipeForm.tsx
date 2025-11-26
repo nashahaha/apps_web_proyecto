@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosSecure from "../utils/axiosSecure";
 import { useRecipesStore } from "../stores/recipeStores";
@@ -6,9 +6,35 @@ import { useRecipesStore } from "../stores/recipeStores";
 function NewRecipeForm() {
     const navigate = useNavigate();
     const addCreatedRecipe = useRecipesStore(state => state.addCreatedRecipe);
-    const unit = ["unit", "ml", "g", "tsp", "tbsp", "cup"];
-    const allIngredients = ["Eggplant", "Tomato", "Onion", "Garlic", "Olive Oil"];
+    const unit = ["unit", "ml", "g", "kg", "tsp", "tbsp", "cup", "oz", "lb"];
+    const [allIngredients, setAllIngredients] = useState<string[]>([
+        "Eggplant", "Tomato", "Onion", "Garlic", "Olive Oil",
+        "Salt", "Pepper", "Chicken", "Beef", "Pork", "Fish",
+        "Rice", "Pasta", "Potatoes", "Carrots", "Celery",
+        "Cheese", "Milk", "Butter", "Eggs", "Flour",
+        "Sugar", "Honey", "Lemon", "Lime", "Basil",
+        "Oregano", "Thyme", "Rosemary", "Parsley", "Cilantro",
+        "Mushrooms", "Bell Pepper", "Spinach", "Lettuce", "Cucumber"
+    ]);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+    // Cargar ingredientes de la base de datos
+    useEffect(() => {
+        const fetchIngredients = async () => {
+            try {
+                const response = await axiosSecure.get('/api/ingredients');
+                const dbIngredients = response.data.map((ing: any) => 
+                    ing.name.charAt(0).toUpperCase() + ing.name.slice(1)
+                );
+                // Combinar ingredientes por defecto con los de la DB (sin duplicados)
+                const combined = Array.from(new Set([...allIngredients, ...dbIngredients]));
+                setAllIngredients(combined.sort());
+            } catch (error) {
+                console.error("Error loading ingredients:", error);
+            }
+        };
+        fetchIngredients();
+    }, []);
 
     type Ingredient = {
         amount: number;
@@ -68,6 +94,21 @@ function NewRecipeForm() {
         const validIngredients = ingredients.filter(
             (ing) => ing.amount > 0 && ing.name.trim() !== ""
         );
+
+        // Guardar nuevos ingredientes en la DB
+        for (const ing of validIngredients) {
+            const ingredientName = ing.name.trim();
+            // Verificar si es un ingrediente nuevo
+            if (!allIngredients.some(i => i.toLowerCase() === ingredientName.toLowerCase())) {
+                try {
+                    await axiosSecure.post('/api/ingredients', { name: ingredientName });
+                    // Agregar a la lista local para evitar duplicados
+                    setAllIngredients(prev => [...prev, ingredientName].sort());
+                } catch (error) {
+                    console.error("Error saving ingredient:", error);
+                }
+            }
+        }
 
         const ingredientsForDB = validIngredients.map((ing) => ({
             ingredient: ing.name,
@@ -157,16 +198,6 @@ function NewRecipeForm() {
                             <div key={index} className="join flex gap-2 items-center">
                                 {/* Cantidad */}
                                 <div className="flex items-center gap-2">
-                                    <button
-                                        className="btn btn-circle"
-                                        onClick={() =>
-                                            updateIngredient(index, "amount", Math.max(0, ing.amount - 1))
-                                        }
-                                        type="button"
-                                    >
-                                        -
-                                    </button>
-
                                     <input
                                         type="number"
                                         className="input input-bordered w-16 text-center"
@@ -178,14 +209,6 @@ function NewRecipeForm() {
                                         min="0"
                                         placeholder="0"
                                     />
-
-                                    <button
-                                        className="btn btn-circle"
-                                        onClick={() => updateIngredient(index, "amount", ing.amount + 1)}
-                                        type="button"
-                                    >
-                                        +
-                                    </button>
                                 </div>
 
                                 {/* Unidad */}

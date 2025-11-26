@@ -27,6 +27,7 @@ interface RecipesState {
   selectRecipe: (id: string) => Promise<void>;
   createRecipe: (recipe: Partial<Recipe>) => Promise<void>;
   addCreatedRecipe: (recipe: Recipe) => void;
+  updateRecipe: (id: string, recipe: Partial<Recipe>) => Promise<void>;
   deleteRecipe: (id: string) => Promise<void>;
   addToFavorites: (recipeId: string) => Promise<void>;
   removeFromFavorites: (recipeId: string) => Promise<void>;
@@ -110,6 +111,20 @@ export const useRecipesStore = create<RecipesState>((set, get) => ({
       recipes: [...state.recipes, recipe],
       myRecipes: [...state.myRecipes, recipe]
     }));
+  },
+
+  updateRecipe: async (id, recipe) => {
+    try {
+      const { data } = await axiosSecure.put(`/api/recipes/${id}`, recipe);
+      set((state) => ({
+        recipes: state.recipes.map(r => r.id === id ? data : r),
+        myRecipes: state.myRecipes.map(r => r.id === id ? data : r),
+        selectedRecipe: state.selectedRecipe?.id === id ? data : state.selectedRecipe
+      }));
+    } catch (error) {
+      console.error('Error updating recipe:', error);
+      throw error;
+    }
   },
 
   deleteRecipe: async (id) => {

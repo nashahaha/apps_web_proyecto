@@ -55,7 +55,7 @@ const Navbar = () => {
                     {user?.name || 'My Profile'}
                   </summary>
                   <ul className="bg-base-100 rounded-t-none p-2 shadow">
-                    <li><Link to="/profile" className={navLink}>Ver Perfil</Link></li>
+                    <li><Link to="/profile" className={navLink}>View Profile</Link></li>
                     <li><Link to="/newRecipe" className={navLink}>Add New Recipe</Link></li>
                     <li>
                       <button onClick={handleLogout} className={`${navLink} !text-rose-500 hover:!text-rose-600 font-medium`}>
