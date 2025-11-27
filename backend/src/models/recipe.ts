@@ -16,7 +16,11 @@ export interface Recipe {
     youtube?: string;
     source?: string;
     ingredients: Ingredient[];
-    author?: mongoose.Types.ObjectId;
+    author?: mongoose.Types.ObjectId | {
+        id: string;
+        name: string;
+        email: string;
+    };
 }
 
 const ingredientSchema = new mongoose.Schema<Ingredient>({

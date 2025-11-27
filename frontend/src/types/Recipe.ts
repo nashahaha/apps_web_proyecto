@@ -14,7 +14,7 @@ export interface Recipe {
   youtube?: string;
   source?: string;
   ingredients: Ingredient[];
-  author?: {
+  author?: string | {
     id: string;
     name: string;
     email: string;

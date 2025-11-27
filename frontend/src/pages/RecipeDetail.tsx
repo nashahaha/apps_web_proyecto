@@ -28,7 +28,10 @@ const RecipeDetail = () => {
   // Check if current user is the recipe owner
   let isOwner = false;
   if (currentUser && recipe?.author) {
-    isOwner = recipe.author.id === currentUser.id;
+    const authorId = typeof recipe.author === 'string' 
+      ? recipe.author 
+      : (recipe.author as { id: string; name: string; email: string }).id;
+    isOwner = authorId === currentUser.id;
   }
 
   const handleDelete = async () => {
