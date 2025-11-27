@@ -20,7 +20,7 @@ Este directorio contiene las pruebas end-to-end (E2E) para la aplicación de rec
 ### Ejecutar los Tests
 ```bash
 cd e2e-tests
-npm test
+npm test -- --workers=1
 ```
 
 ## Estructura de Archivos
@@ -37,10 +37,8 @@ npm test
 #### `crud.spec.ts`
 **Funcionalidad**: Operaciones CRUD (Create, Read, Update, Delete) de recetas
 - **Create**: Creación de nuevas recetas con imagen, ingredientes e instrucciones
-
-#### `favs.spec.ts`
-**Funcionalidad**: Verificación de favoritos de recetas 
-- **Add Favs**: Adición de recetas favoritas al perfil del usuario.
+- **Edit**: Edición de recetas cambiando el nombre, ingredientes e instrucciones
+- **Delete**: Eliminar recetas creadas por el usuario 
 
 #### `frontpage.spec.ts`
 **Funcionalidad**: Pruebas de la página principal
@@ -57,6 +55,10 @@ npm test
 - `login(page)`: Función helper para hacer login en los tests
 - Reseteo de base de datos para tests aislados
 
+#### `recipes.ts``
+**Utilidades de recetas reutilizables**:
+- `resetAndLogin(page: Page, request: APIRequestContext)`: Resetea la bd y hace login de un usuario
+- `createRecipe(page: Page)`: Como se crea una receta por test en crud, se asigna con un nombre específico para que entre tests no se confunda.
 
 ### Variables de Entorno
 - Los tests asumen que el backend corre en `http://localhost:3001`

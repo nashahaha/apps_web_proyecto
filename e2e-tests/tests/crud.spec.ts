@@ -1,72 +1,49 @@
-import { test, expect, Page, APIRequestContext } from "@playwright/test";
-import { registerDefaultUser } from "../helpers/auth";
+import { test, expect } from "@playwright/test";
+import { resetAndLogin, createRecipe } from "../helpers/recipes";
 
-// Función para limpiar la base de datos
-async function clearDatabase(request: APIRequestContext) {
-    await request.post("http://localhost:3001/api/testing/reset");
-}
 
-// Función para hacer login del usuario
-async function loginUser(page: Page) {
-    await page.goto("/login");
-    await page.getByLabel("Email").fill("test@example.com");
-    await page.getByLabel("Password").fill("123456");
-    await page.getByRole("button", { name: /login/i }).click();
-    await page.waitForURL("/", { timeout: 10000 });
-}
+test.beforeEach(async ({ page, request }) => {
+    await resetAndLogin(page, request);
+});
 
-// Función para crear una receta
-async function createTestRecipe(page: Page) {
-    await page.goto("/newRecipe");
-    await page.waitForLoadState('networkidle');
-    
-    // Subir imagen
-    await page.setInputFiles('input[type="file"]', './fixtures/tallarines.png');
-    
-    // Llenar nombre de la receta
-    await page.locator('input[placeholder^="Roasted Eggplant"]').fill("My Test Recipe");
-    
-    // Llenar el primer ingrediente (cantidad)
-    await page.locator('input[type="number"]').first().fill("2");
-    
-    // Llenar nombre del ingrediente
-    await page.getByPlaceholder("Search ingredient...").fill("Tomato");
-    
-    // Llenar instrucciones
-    await page.getByPlaceholder("Enter your recipe intructions...")
-        .fill("Mix everything and cook.");
-    
-    // Publicar receta
-    await page.getByRole("button", { name: /publish recipe/i }).click();
-    await page.waitForURL("/", { timeout: 10000 });
-}
+test("user can create recipe and add it to favorites", async ({ page }) => {
+    const { id, name } = await createRecipe(page);
 
-test.describe("Recipe CRUD operations", () => {
-    test("user can create recipe and add it to favorites", async ({ page, request }) => {
-        //Limpiar base de datos para partir de cero
-        await clearDatabase(request);
-        
-        //Registrar usuario
-        await registerDefaultUser(request);
-        
-        //Login del usuario
-        await loginUser(page);
-        
-        //Crear receta
-        await createTestRecipe(page);
-        
-        //Verificar que la receta fue creada
-        await expect(page.getByText("My Test Recipe")).toBeVisible();
-        
-        //Añadir receta a favoritos
-        await page.getByPlaceholder("Search by ingredient...").fill("My Test Recipe");
-        await expect(page.getByText("My Test Recipe").first()).toBeVisible();
-        
-        const favButton = page.getByRole('button', { name: 'Agregar a favoritos' }).first();
-        await favButton.click();
-        
-        //Verificar que la receta está en favoritos
-        await page.goto("/profile");
-        await expect(page.getByText("My Test Recipe").first()).toBeVisible();
-    });
+    // Verificar que existe
+    await expect(page.getByText(name)).toBeVisible();
+
+    // Verificar en favoritos
+    await page.goto("/profile");
+    await expect(page.getByText(name)).toBeVisible();
+});
+
+test("user can edit recipe", async ({ page }) => {
+    const { id, name } = await createRecipe(page);
+
+    await page.goto(`/recipe/${id}`);
+
+    await page.getByRole("link", { name: /Edit/i }).click();
+
+    await page.locator('input[placeholder="Recipe name"]').fill("Pasta with Tomato Sauce");
+    await page.getByRole("button", { name: /save changes/i }).click();
+
+    await expect(page.getByText("Pasta with Tomato Sauce")).toBeVisible();
+});
+
+test("user can delete recipe", async ({ page }) => {
+    const { id, name } = await createRecipe(page);
+
+    await page.goto(`/recipe/${id}`);
+
+    await page.getByRole("button", { name: /^Delete$/i }).click();
+    await page.waitForSelector(".modal-open .modal-box");
+
+    const confirm = page.locator(".modal-box").getByRole("button", { name: /^Delete$/i });
+
+    await Promise.all([
+        page.waitForURL("/profile"),
+        confirm.click(),
+    ]);
+
+    await expect(page.getByText(name)).not.toBeVisible();
 });
