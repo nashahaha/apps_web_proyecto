@@ -1,13 +1,13 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, Page, APIRequestContext } from "@playwright/test";
 import { registerDefaultUser } from "../helpers/auth";
 
 // Función para limpiar la base de datos
-async function clearDatabase(request: any) {
+async function clearDatabase(request: APIRequestContext) {
     await request.post("http://localhost:3001/api/testing/reset");
 }
 
 // Función para hacer login del usuario
-async function loginUser(page: any) {
+async function loginUser(page: Page) {
     await page.goto("/login");
     await page.getByLabel("Email").fill("test@example.com");
     await page.getByLabel("Password").fill("123456");
@@ -16,7 +16,7 @@ async function loginUser(page: any) {
 }
 
 // Función para crear una receta
-async function createTestRecipe(page: any) {
+async function createTestRecipe(page: Page) {
     await page.goto("/newRecipe");
     await page.waitForLoadState('networkidle');
     
