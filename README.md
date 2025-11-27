@@ -84,7 +84,7 @@ NomNom es una aplicación SPA (Single Page Application) que permite a los usuari
 ```bash
 cd e2e-tests
 npm install
-npm test -- --workers=1
+npm test
 ```
 
 ## Estructura de Archivos
