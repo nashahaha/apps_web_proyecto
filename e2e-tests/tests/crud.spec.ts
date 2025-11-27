@@ -6,7 +6,7 @@ test.beforeEach(async ({ page, request }) => {
     await resetAndLogin(page, request);
 });
 
-test("user can create recipe and add it to favorites", async ({ page }) => {
+test("user can create recipe", async ({ page }) => {
     const { id, name } = await createRecipe(page);
 
     // Verificar que existe
