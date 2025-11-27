@@ -8,18 +8,21 @@ Este directorio contiene las pruebas end-to-end (E2E) para la aplicación de rec
 1. **Backend**: Debe estar ejecutándose en modo test
    ```bash
    cd backend
+   npm install
    npm run start:test
    ```
 
 2. **Frontend**: Debe estar ejecutándose en desarrollo
    ```bash
    cd frontend
+   npm install
    npm run dev
    ```
 
 ### Ejecutar los Tests
 ```bash
 cd e2e-tests
+npm install
 npm test -- --workers=1
 ```
 
